@@ -1,0 +1,7 @@
+<RCC>
+    <qresource prefix="/img">
+        <file>img/arrow.png</file>
+        <file>img/clip.png</file>
+        <file>img/emoji.png</file>
+    </qresource>
+</RCC>
