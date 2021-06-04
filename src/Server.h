@@ -6,14 +6,15 @@
 
 class Server final {
 public:
-    Server();
+                      Server();
 
-    void start(asio::ip::address const& ip_address, unsigned short const port);
+    void              start(asio::ip::address const& ip_address, unsigned short const port);
+    void              start_accepting();
 
-    void start_accepting();
-    void on_accept(std::shared_ptr<ServerSession> session, system::error_code const& ec);
-    void setRoomname(std::string_view roomname);
-    void stop();
+    void              on_accept(std::shared_ptr<ServerSession> session, system::error_code const& ec);
+    void              setRoomname(std::string_view roomname);
+
+    void              stop();
     asio::ip::address address() const noexcept;
 
 private:

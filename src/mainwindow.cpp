@@ -12,6 +12,7 @@ MainWindow::MainWindow(QWidget *parent)
     ui->setupUi(this);
     ui->inputTextEdit->setPlaceholderText("Type here");
     ui->plainTextEdit->setReadOnly(true);
+
     Utility::set_button_icon(ui->emojiButton, ":/img/img/emoji.png", 1.5);
     Utility::set_button_icon(ui->attachmentsButton, ":/img/img/clip.png", 1.5);
     Utility::set_button_icon(ui->sendButton, ":/img/img/arrow.png", 1.1);
@@ -55,11 +56,13 @@ void MainWindow::on_backButton_2_clicked() {
 void MainWindow::on_connectButton_2_clicked() {
     ui->connection_status_label->setText("Connecting to " + ui->ip_address_le->text() + "...");
     auto const ip_address_raw{ui->ip_address_le->text().toStdString()};
+
     auto const port{ui->port_le->text().toShort()};
     auto const username{ui->username_le->text().toStdString()};
 
     system::error_code bad_address;
     auto const ip_address{ boost::asio::ip::address::from_string(ip_address_raw, bad_address) };
+
     if (!bad_address)
           client->connect(ip_address, port, Utility::Usertype::USER);
 }
@@ -75,22 +78,27 @@ void MainWindow::on_backButton_3_clicked() {
 void MainWindow::on_startButton_clicked() {
     auto const port{ui->server_port_le->text().toShort()};
     auto const address_raw{ui->ip_address_le_2->text().toStdString()};
+
     auto const username{ui->host_username_le->text().toStdString()};
     auto const roomname{ui->room_name_le->text().toStdString()};
 
     system::error_code bad_address;
     auto const address{asio::ip::address::from_string(address_raw, bad_address)};
+
     if (!bad_address) {
         try {
             server->start(address, port);
             server->setRoomname(roomname);
+
             hosted = true;
+
             ui->username_le->setText(ui->host_username_le->text());
             client->connect(server->address(), port, Utility::Usertype::ADMIN);
         }
         catch(system::system_error const& error) {
             auto errorMsgBox{new QMessageBox{this}};
             errorMsgBox->setText("Couldn't start server: " + QString::fromStdString(error.what()));
+
             errorMsgBox->exec();
         }
     }
@@ -108,6 +116,7 @@ void MainWindow::on_sendButton_clicked() {
 
 void MainWindow::onReceived(std::string_view message) {
     auto const[complete_message, user_list]{Utility::process_message(message)};
+
     updateUserlist(user_list);
     ui->plainTextEdit->appendPlainText(QString::fromStdString(complete_message));
 }
@@ -115,6 +124,7 @@ void MainWindow::onReceived(std::string_view message) {
 void MainWindow::onErrorOccured(system::error_code const& ec) {
     auto errorMsgBox{new QMessageBox{this}};
     errorMsgBox->setText("Error occured: " + QString::fromStdString(ec.message()) + "\nError code: " + QString::number(ec.value()));
+
     errorMsgBox->exec();
 }
 
@@ -125,6 +135,7 @@ void MainWindow::onEnterPressed() {
 void MainWindow::sendMessage() {
     if (!ui->inputTextEdit->toPlainText().isEmpty()) {
         auto const message{ui->inputTextEdit->toPlainText().toStdString() + '\n'};
+
         client->write(message);
         ui->inputTextEdit->clear();
     }
@@ -139,6 +150,7 @@ void MainWindow::updateUserlist(std::vector<std::string> const& user_list) {
 void MainWindow::onConnected() {
     client->setClientUsername(ui->username_le->text().toStdString());
     client->communicate();
+
     ui->username_label->setText(ui->username_le->text());
     ui->plainTextEdit->setPlainText("Connected to the server");
 }
@@ -163,5 +175,6 @@ void MainWindow::onBadConnect(system::error_code const& ec) {
 void MainWindow::onReceivedInfo(std::pair<std::string, std::vector<std::string>> info) {
     ui->roomname_label->setText(QString::fromStdString(info.first));
     updateUserlist(info.second);
+
     ui->stackedWidget->setCurrentIndex(1);
 }

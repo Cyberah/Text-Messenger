@@ -17,6 +17,7 @@ namespace Utility {
     inline std::string make_string(boost::asio::streambuf& buf) {
         std::string temp;
         std::istream is{ &buf };
+
         std::getline(is, temp);
         return temp;
     }
@@ -24,6 +25,7 @@ namespace Utility {
     inline void set_button_icon(QAbstractButton* button, QString const& image_path, double const factor) {
         QPixmap pixmap(image_path);
         QIcon ButtonIcon(pixmap);
+
         button->setIcon(ButtonIcon);
         button->setIconSize(button->rect().size() / factor);
     }
@@ -37,6 +39,7 @@ namespace Utility {
 
         std::vector<std::string> user_list;
         boost::split(user_list, result[3], boost::is_any_of(","));
+
         return { processed_message, user_list };
     }
 
@@ -49,12 +52,14 @@ namespace Utility {
 
         std::vector<std::string> user_list;
         boost::split(user_list, result[1], boost::is_any_of(","));
+
         return { room_name, user_list };
     }
 
     //username|\\usertype;
     inline std::pair<std::string, Usertype> extract_user_info(std::string_view content) {
         auto const pos{ content.find("|\\") };
+
         std::string const username{ content.cbegin(), content.cbegin() + pos };
         std::string const usertype_str{ content.cbegin() + pos + 2, content.cend() };
 

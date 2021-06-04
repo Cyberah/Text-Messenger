@@ -7,11 +7,11 @@ PushButtonHover::PushButtonHover(QWidget *parent)
 }
 
 void PushButtonHover::enterEvent(QEvent *) {
-        setCursor(Qt::PointingHandCursor);
+    setCursor(Qt::PointingHandCursor);
 }
 
 void PushButtonHover::leaveEvent(QEvent *) {
-        setCursor(Qt::ArrowCursor);
+    setCursor(Qt::ArrowCursor);
 }
 
 bool PushButtonHover::event(QEvent *e) {

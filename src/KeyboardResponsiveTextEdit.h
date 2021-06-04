@@ -6,13 +6,11 @@
 class KeyboardResponsiveTextEdit final : public QPlainTextEdit {
     Q_OBJECT
 public:
-    KeyboardResponsiveTextEdit(QWidget* parent = nullptr);
-    void keyPressEvent(QKeyEvent* event) override;
+                    KeyboardResponsiveTextEdit(QWidget* parent = nullptr);
+    void            keyPressEvent(QKeyEvent* event) override;
 
 signals:
-    void enterPressed();
-private:
-    //stuff?
+    void            enterPressed();
 };
 
 #endif // KEYBOARDRESPONSIVETEXTEDIT_H

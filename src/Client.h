@@ -8,36 +8,34 @@ using namespace boost;
 class Client final : public QObject {
     Q_OBJECT
 public:
-    Client();
+                        Client();
 
-    void connect(asio::ip::address const& ip_address, unsigned short const port, Utility::Usertype ut);
-    void disconnect();
+    void                connect(asio::ip::address const& ip_address, unsigned short const port, Utility::Usertype ut);
+    void                disconnect();
 
-    void setClientUsername(std::string_view username);
-    void communicate();
+    void                setClientUsername(std::string_view username);
+    void                communicate();
 
-    void write(std::string_view message);
-    void read();
+    void                write(std::string_view message);
+    void                read();
 
 signals:
-    void received(std::string_view msg);
-    void errorOccured(system::error_code const& ec);
+    void                received(std::string_view msg);
+    void                errorOccured(system::error_code const& ec);
 
-    void badConnect(system::error_code const& ec);
-    void connected();
+    void                badConnect(system::error_code const& ec);
+    void                connected();
 
-    void received_info(std::pair<std::string, std::vector<std::string>> info);
+    void                received_info(std::pair<std::string, std::vector<std::string>> info);
 
 private:
-    void on_connected(system::error_code const& ec);
-    void ping();
+    void                on_connected(system::error_code const& ec);
 
-    void write_info();
-    void read_info();
+    void                write_info();
+    void                read_info();
 
-    void handle_read();
-
-    std::string get_message();
+    void                handle_read();
+    std::string         get_message();
 
 private:
     asio::io_context m_ioc;

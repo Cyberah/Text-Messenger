@@ -5,22 +5,22 @@
 
 class Service final : public std::enable_shared_from_this<Service> {
 public:
-    Service(std::shared_ptr<ServerSession> s, std::vector<std::shared_ptr<ServerSession>>& active_sessions, std::string_view room_name);
-    void startHandling();
+    explicit        Service(std::shared_ptr<ServerSession> s, std::vector<std::shared_ptr<ServerSession>>& active_sessions, std::string_view room_name);
+    void            startHandling();
 
 private:
-    void receive_info();
-    void on_received_info(system::error_code const& ec);
+    void            receive_info();
+    void            on_received_info(system::error_code const& ec);
 
-    void write_info();
+    void            write_info();
 
-    void readData();
-    void onReadDone(system::error_code const& ec);
+    void            readData();
+    void            onReadDone(system::error_code const& ec);
 
-    void sendToAll(std::string_view message);
-    std::string make_message(std::string_view message);
-    std::string user_list_str();
+    void            sendToAll(std::string_view message);
 
+    std::string     make_message(std::string_view message);
+    std::string     user_list_str();
 
 private:
     std::string message;

@@ -7,6 +7,7 @@ void Client::connect(asio::ip::address const& ip_address, const unsigned short p
     m_work = std::make_unique<asio::io_context::work>(m_ioc);
     m_session = std::make_shared<ClientSession>(m_ioc, ip_address, port);
     m_usertype = ut;
+
     m_session->sock.async_connect(m_session->ep,
         [this](auto const& ec) {
             on_connected(ec);
@@ -21,7 +22,10 @@ void Client::connect(asio::ip::address const& ip_address, const unsigned short p
 void Client::disconnect() {
     m_session->sock.shutdown(asio::ip::tcp::socket::shutdown_both);
     m_ioc.stop();
-    m_readThread->join();
+
+    if (m_readThread->joinable())
+        m_readThread->join();
+
     for (auto& th : m_thread_pool)
         th->join();
 }
@@ -34,19 +38,17 @@ void Client::on_connected(const system::error_code &ec) {
 }
 
 void Client::communicate() {
-    //ping();
     write_info();
-    // read_info();
-    // handle_read();
 }
 
 void Client::write_info() {
     auto const ut{ m_usertype == Utility::Usertype::ADMIN ? "ADMIN" : "USER" };
     auto const complete_info{ m_user_name + "|\\" + ut + '\n' };
+
     asio::async_write(m_session->sock, asio::buffer(&complete_info[0], complete_info.length()),
         [this](auto const& ec, auto const /*bytes_transferred*/) {
             if (!ec)
-                read_info(); //handle_read();
+                read_info();
             else
                 emit errorOccured(ec);
     });
@@ -58,6 +60,7 @@ void Client::read_info() {
             if (!ec) {
                 auto const info_raw = Utility::make_string(m_info_sbuf);
                 auto const info{ Utility::process_server_info(info_raw) };
+
                 emit received_info(info);
                 handle_read();
             }
@@ -82,6 +85,7 @@ void Client::read() {
             if (!ec) {
                 auto const message = Utility::make_string(m_read_sbuf);
                 emit received(message);
+
                 read();
             }
     });
