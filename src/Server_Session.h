@@ -1,6 +1,7 @@
 #ifndef SERVER_SESSION_H
 #define SERVER_SESSION_H
 #include <boost/asio.hpp>
+
 using namespace boost;
 
 struct ServerSession final {
@@ -10,7 +11,7 @@ struct ServerSession final {
 
     asio::ip::tcp::socket sock;
     asio::ip::tcp::endpoint ep;
-    std::string user_name;
+    std::string username;
 };
 
 #endif // SERVER_SESSION_H

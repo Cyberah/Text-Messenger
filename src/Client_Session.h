@@ -1,6 +1,7 @@
 #ifndef CLIENT_SESSION_H
 #define CLIENT_SESSION_H
 #include <boost/asio.hpp>
+
 using namespace boost;
 
 struct ClientSession final {

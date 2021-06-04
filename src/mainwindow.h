@@ -48,14 +48,18 @@ private slots:
     void onConnected();
 
     void onBadConnect(system::error_code const& ec);
+
+    void onReceivedInfo(std::pair<std::string, std::vector<std::string>> info);
+
 private:
     void sendMessage();
     void badConnect(system::error_code const& ec);
+    void updateUserlist(std::vector<std::string> const& user_list);
 
 private:
     Ui::MainWindow *ui;
     std::unique_ptr<Client> client;
     std::unique_ptr<Server> server;
-    bool initialized{false};
+    bool hosted{false};
 };
 #endif // MAINWINDOW_H
