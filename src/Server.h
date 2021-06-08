@@ -4,7 +4,7 @@
 #include "Server_Session.h"
 #include "Service.h"
 
-class Server final {
+class Server {
 public:
                       Server();
 

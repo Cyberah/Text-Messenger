@@ -84,7 +84,7 @@ std::string Service::make_message(std::string_view message) {
     return m_session->username + "|\\" + ut + "|\\" + message.data() + "|\\" + users_str + '\n';
 }
 
-std::string Service::user_list_str() {
+ std::string Service::user_list_str() {
     auto users_str{ std::accumulate(m_active_sessions.cbegin(), m_active_sessions.cend(), std::string{},
         [](auto const& str, auto const& session) {
             return str + session->username + ',';

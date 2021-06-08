@@ -30,7 +30,7 @@ void Client::disconnect() {
         th->join();
 }
 
-void Client::on_connected(const system::error_code &ec) {
+void Client::on_connected(system::error_code const& ec) {
     if (!ec)
         emit connected();
     else

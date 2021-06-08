@@ -3,10 +3,14 @@
 #include <QObject>
 #include "Client_Session.h"
 #include "Utility.h"
+#include "reg_error_code.h"
+
 using namespace boost;
 
 class Client final : public QObject {
     Q_OBJECT
+    //friend class ClientTest;
+
 public:
                         Client();
 
@@ -49,5 +53,4 @@ private:
     asio::io_context::strand m_strand{ m_ioc };
     std::vector<std::unique_ptr<std::thread>> m_thread_pool;
 };
-
 #endif // CLIENT_H
