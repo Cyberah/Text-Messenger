@@ -2,6 +2,7 @@
 #define TST_TEMP_H
 
 #include <gtest/gtest.h>
+#include <gmock/gmock.h>
 #include <gmock/gmock-matchers.h>
 #include <QSignalSpy>
 
@@ -27,7 +28,8 @@ TEST(ClientTest, passingGoodArgumentsToClientConnectMethodProperlyConnects)
     QSignalSpy badConnectEmitted{client, SIGNAL(badConnect(system::error_code const&))};
 
     client->connect(ip_address, port, Utility::Usertype::USER);
-    std::this_thread::sleep_for(std::chrono::milliseconds(5));
+    //std::this_thread::sleep_for(std::chrono::milliseconds(5));
+    ASSERT_TRUE(connectedEmitted.wait(5000));
     EXPECT_EQ(connectedEmitted.count(), 1);
     EXPECT_EQ(badConnectEmitted.count(), 0);
 }

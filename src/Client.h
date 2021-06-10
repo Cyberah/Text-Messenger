@@ -3,7 +3,6 @@
 #include <QObject>
 #include "Client_Session.h"
 #include "Utility.h"
-#include "reg_error_code.h"
 
 using namespace boost;
 

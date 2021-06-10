@@ -2,6 +2,10 @@
     <qresource prefix="/img">
         <file>img/arrow.png</file>
         <file>img/clip.png</file>
+        <file>img/speechbubble.png</file>
         <file>img/emoji.png</file>
+    </qresource>
+    <qresource prefix="/font">
+        <file>font/QuiteMagicalRegular-8VA2.ttf</file>
     </qresource>
 </RCC>

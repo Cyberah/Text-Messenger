@@ -47,7 +47,7 @@ private:
     void            sendMessage();
     void            badConnect(system::error_code const& ec);
     void            updateUserlist(std::vector<std::string> const& user_list);
-
+    void            setupAppearance();
 private:
     Ui::MainWindow *ui;
     std::unique_ptr<Client> client;

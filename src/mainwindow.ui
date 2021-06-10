@@ -24,7 +24,7 @@
        </sizepolicy>
       </property>
       <property name="currentIndex">
-       <number>0</number>
+       <number>1</number>
       </property>
       <widget class="QWidget" name="page">
        <layout class="QGridLayout" name="gridLayout_5">
@@ -62,7 +62,7 @@
           <widget class="QWidget" name="page_3">
            <layout class="QGridLayout" name="gridLayout_2">
             <item row="3" column="0">
-             <widget class="QPushButton" name="hostButton">
+             <widget class="PushButtonHover" name="hostButton">
               <property name="text">
                <string>Host</string>
               </property>
@@ -101,14 +101,17 @@
              </spacer>
             </item>
             <item row="2" column="0">
-             <widget class="QPushButton" name="connectButton">
+             <widget class="PushButtonHover" name="connectButton">
+              <property name="styleSheet">
+               <string notr="true"/>
+              </property>
               <property name="text">
                <string>Connect</string>
               </property>
              </widget>
             </item>
             <item row="4" column="0">
-             <widget class="QPushButton" name="exitButton">
+             <widget class="PushButtonHover" name="exitButton">
               <property name="text">
                <string>Exit</string>
               </property>
@@ -151,26 +154,30 @@
           <widget class="QWidget" name="page_6">
            <layout class="QGridLayout" name="gridLayout_3">
             <item row="5" column="1">
-             <widget class="QPushButton" name="connectButton_2">
+             <widget class="PushButtonHover" name="connectButton_2">
               <property name="text">
                <string>Connect</string>
               </property>
              </widget>
             </item>
             <item row="5" column="2">
-             <widget class="QPushButton" name="exitButton_2">
+             <widget class="PushButtonHover" name="exitButton_2">
               <property name="text">
                <string>Exit</string>
               </property>
              </widget>
             </item>
             <item row="1" column="1" colspan="2">
-             <widget class="QLineEdit" name="username_le"/>
+             <widget class="QLineEdit" name="username_le">
+              <property name="styleSheet">
+               <string notr="true">border: 2px solid #ffd700; border-radius: 10px;</string>
+              </property>
+             </widget>
             </item>
             <item row="2" column="0">
              <widget class="QLabel" name="label">
               <property name="text">
-               <string>ip address:</string>
+               <string>Address:</string>
               </property>
               <property name="alignment">
                <set>Qt::AlignCenter</set>
@@ -180,7 +187,7 @@
             <item row="1" column="0">
              <widget class="QLabel" name="label_7">
               <property name="text">
-               <string>Username</string>
+               <string>Username:</string>
               </property>
               <property name="alignment">
                <set>Qt::AlignCenter</set>
@@ -188,7 +195,7 @@
              </widget>
             </item>
             <item row="5" column="0">
-             <widget class="QPushButton" name="backButton_2">
+             <widget class="PushButtonHover" name="backButton_2">
               <property name="text">
                <string>Back</string>
               </property>
@@ -197,7 +204,7 @@
             <item row="3" column="0">
              <widget class="QLabel" name="label_3">
               <property name="text">
-               <string>port:</string>
+               <string>Port:</string>
               </property>
               <property name="alignment">
                <set>Qt::AlignCenter</set>
@@ -221,10 +228,18 @@
              </widget>
             </item>
             <item row="3" column="1" colspan="2">
-             <widget class="QLineEdit" name="port_le"/>
+             <widget class="QLineEdit" name="port_le">
+              <property name="styleSheet">
+               <string notr="true">border: 2px solid #ffd700; border-radius: 10px;</string>
+              </property>
+             </widget>
             </item>
             <item row="2" column="1" colspan="2">
-             <widget class="QLineEdit" name="ip_address_le"/>
+             <widget class="QLineEdit" name="ip_address_le">
+              <property name="styleSheet">
+               <string notr="true">border: 2px solid #ffd700; border-radius: 10px;</string>
+              </property>
+             </widget>
             </item>
             <item row="0" column="0" colspan="3">
              <spacer name="verticalSpacer_3">
@@ -265,17 +280,21 @@
             <item row="1" column="0">
              <widget class="QLabel" name="label_5">
               <property name="text">
-               <string>Room name</string>
+               <string>Room name:</string>
               </property>
              </widget>
             </item>
             <item row="3" column="1" colspan="2">
-             <widget class="QLineEdit" name="ip_address_le_2"/>
+             <widget class="QLineEdit" name="ip_address_le_2">
+              <property name="styleSheet">
+               <string notr="true">border: 2px solid #ffd700; border-radius: 10px;</string>
+              </property>
+             </widget>
             </item>
             <item row="3" column="0">
              <widget class="QLabel" name="label_2">
               <property name="text">
-               <string>Ip address</string>
+               <string>Address:</string>
               </property>
              </widget>
             </item>
@@ -296,36 +315,44 @@
              </spacer>
             </item>
             <item row="7" column="0">
-             <widget class="QPushButton" name="backButton_3">
+             <widget class="PushButtonHover" name="backButton_3">
               <property name="text">
                <string>Back</string>
               </property>
              </widget>
             </item>
             <item row="1" column="1" colspan="2">
-             <widget class="QLineEdit" name="room_name_le"/>
+             <widget class="QLineEdit" name="room_name_le">
+              <property name="styleSheet">
+               <string notr="true">border: 2px solid #ffd700; border-radius: 10px;</string>
+              </property>
+             </widget>
             </item>
             <item row="7" column="1">
-             <widget class="QPushButton" name="startButton">
+             <widget class="PushButtonHover" name="startButton">
               <property name="text">
                <string>Start</string>
               </property>
              </widget>
             </item>
             <item row="7" column="2">
-             <widget class="QPushButton" name="exitButton_3">
+             <widget class="PushButtonHover" name="exitButton_3">
               <property name="text">
                <string>Exit</string>
               </property>
              </widget>
             </item>
             <item row="2" column="1" colspan="2">
-             <widget class="QLineEdit" name="host_username_le"/>
+             <widget class="QLineEdit" name="host_username_le">
+              <property name="styleSheet">
+               <string notr="true">border: 2px solid #ffd700; border-radius: 10px;</string>
+              </property>
+             </widget>
             </item>
             <item row="2" column="0">
              <widget class="QLabel" name="host_username_label">
               <property name="text">
-               <string>Username</string>
+               <string>Username:</string>
               </property>
              </widget>
             </item>
@@ -349,12 +376,16 @@
              </widget>
             </item>
             <item row="4" column="1" colspan="2">
-             <widget class="QLineEdit" name="server_port_le"/>
+             <widget class="QLineEdit" name="server_port_le">
+              <property name="styleSheet">
+               <string notr="true">border: 2px solid #ffd700; border-radius: 10px;</string>
+              </property>
+             </widget>
             </item>
             <item row="4" column="0">
              <widget class="QLabel" name="label_4">
               <property name="text">
-               <string>Port</string>
+               <string>Port:</string>
               </property>
              </widget>
             </item>
@@ -398,6 +429,9 @@
               <height>40</height>
              </size>
             </property>
+            <property name="styleSheet">
+             <string notr="true">border: 2px solid #ffd700; border-radius: 10px;</string>
+            </property>
             <property name="text">
              <string/>
             </property>
@@ -416,6 +450,9 @@
               <width>100</width>
               <height>0</height>
              </size>
+            </property>
+            <property name="styleSheet">
+             <string notr="true">border: 2px solid #ffd700; border-radius: 10px;</string>
             </property>
             <property name="text">
              <string>user list</string>
@@ -452,6 +489,10 @@
               <height>75</height>
              </size>
             </property>
+            <property name="styleSheet">
+             <string notr="true">border: 2px solid #ffd700; border-radius: 10px;
+</string>
+            </property>
             <property name="lineWidth">
              <number>1</number>
             </property>
@@ -475,7 +516,7 @@
               </property>
               <property name="minimumSize">
                <size>
-                <width>20</width>
+                <width>40</width>
                 <height>0</height>
                </size>
               </property>
@@ -484,6 +525,9 @@
                 <width>50</width>
                 <height>37</height>
                </size>
+              </property>
+              <property name="styleSheet">
+               <string notr="true">border: 2px solid #ffd700; border-radius: 10px;</string>
               </property>
               <property name="text">
                <string/>
@@ -504,11 +548,20 @@
                 <verstretch>0</verstretch>
                </sizepolicy>
               </property>
+              <property name="minimumSize">
+               <size>
+                <width>60</width>
+                <height>0</height>
+               </size>
+              </property>
               <property name="maximumSize">
                <size>
                 <width>75</width>
                 <height>73</height>
                </size>
+              </property>
+              <property name="styleSheet">
+               <string notr="true">border: 2px solid #ffd700; border-radius: 10px;</string>
               </property>
               <property name="text">
                <string/>
@@ -531,7 +584,7 @@
               </property>
               <property name="minimumSize">
                <size>
-                <width>20</width>
+                <width>40</width>
                 <height>0</height>
                </size>
               </property>
@@ -540,6 +593,9 @@
                 <width>50</width>
                 <height>37</height>
                </size>
+              </property>
+              <property name="styleSheet">
+               <string notr="true">border: 2px solid #ffd700; border-radius: 10px;</string>
               </property>
               <property name="text">
                <string/>
@@ -594,6 +650,10 @@
               <height>16777215</height>
              </size>
             </property>
+            <property name="styleSheet">
+             <string notr="true">border: 2px solid #ffd700; border-radius: 10px; 
+</string>
+            </property>
             <property name="movement">
              <enum>QListView::Static</enum>
             </property>
@@ -610,7 +670,11 @@
         <item row="1" column="1" colspan="2">
          <layout class="QGridLayout" name="gridLayout_9" rowstretch="0" columnstretch="0">
           <item row="0" column="0">
-           <widget class="QPlainTextEdit" name="plainTextEdit"/>
+           <widget class="QPlainTextEdit" name="plainTextEdit">
+            <property name="styleSheet">
+             <string notr="true">border: 2px solid #ffd700; border-radius: 10px;</string>
+            </property>
+           </widget>
           </item>
          </layout>
         </item>

@@ -13,6 +13,8 @@ MainWindow::MainWindow(QWidget *parent)
     ui->inputTextEdit->setPlaceholderText("Type here");
     ui->plainTextEdit->setReadOnly(true);
 
+    setupAppearance();
+
     Utility::set_button_icon(ui->emojiButton, ":/img/img/emoji.png", 1.5);
     Utility::set_button_icon(ui->attachmentsButton, ":/img/img/clip.png", 1.5);
     Utility::set_button_icon(ui->sendButton, ":/img/img/arrow.png", 1.1);
@@ -177,4 +179,17 @@ void MainWindow::onReceivedInfo(std::pair<std::string, std::vector<std::string>>
     updateUserlist(info.second);
 
     ui->stackedWidget->setCurrentIndex(1);
+}
+
+void MainWindow::setupAppearance() {
+    setStyleSheet("background-color: #021b33; color: white;");
+    Utility::setButtonAppearance(ui->connectButton);
+    Utility::setButtonAppearance(ui->hostButton);
+    Utility::setButtonAppearance(ui->exitButton);
+    Utility::setButtonAppearance(ui->backButton_2);
+    Utility::setButtonAppearance(ui->connectButton_2);
+    Utility::setButtonAppearance(ui->exitButton_2);
+    Utility::setButtonAppearance(ui->backButton_3);
+    Utility::setButtonAppearance(ui->startButton);
+    Utility::setButtonAppearance(ui->exitButton_3);
 }
