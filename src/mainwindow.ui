@@ -24,7 +24,7 @@
        </sizepolicy>
       </property>
       <property name="currentIndex">
-       <number>1</number>
+       <number>0</number>
       </property>
       <widget class="QWidget" name="page">
        <layout class="QGridLayout" name="gridLayout_5">
@@ -56,13 +56,28 @@
         </item>
         <item row="0" column="1">
          <widget class="QStackedWidget" name="stackedWidget_2">
+          <property name="styleSheet">
+           <string notr="true">/*background-color: qlineargradient( x1:0 y1:0, x2:1 y2:0, stop:0 #4d504f, stop:1 #54525e);*/
+background-color: none;</string>
+          </property>
           <property name="currentIndex">
-           <number>0</number>
+           <number>2</number>
           </property>
           <widget class="QWidget" name="page_3">
            <layout class="QGridLayout" name="gridLayout_2">
             <item row="3" column="0">
              <widget class="PushButtonHover" name="hostButton">
+              <property name="styleSheet">
+               <string notr="true">QPushButton { 
+font: 24pt;
+border: 2px solid #ffd700;
+border-radius: 12px;
+} 
+
+QPushButton:hover {
+background-color: qlineargradient( x1:0 y1:0, x2:1 y2:0, stop:0 #272929, stop:1 #797687);
+}</string>
+              </property>
               <property name="text">
                <string>Host</string>
               </property>
@@ -103,7 +118,15 @@
             <item row="2" column="0">
              <widget class="PushButtonHover" name="connectButton">
               <property name="styleSheet">
-               <string notr="true"/>
+               <string notr="true">QPushButton { 
+font: 24pt;
+border: 2px solid #ffd700;
+border-radius: 12px;
+} 
+
+QPushButton:hover {
+background-color: qlineargradient( x1:0 y1:0, x2:1 y2:0, stop:0 #272929, stop:1 #797687);
+}</string>
               </property>
               <property name="text">
                <string>Connect</string>
@@ -112,6 +135,17 @@
             </item>
             <item row="4" column="0">
              <widget class="PushButtonHover" name="exitButton">
+              <property name="styleSheet">
+               <string notr="true">QPushButton { 
+font: 24pt;
+border: 2px solid #ffd700;
+border-radius: 12px;
+} 
+
+QPushButton:hover {
+background-color: qlineargradient( x1:0 y1:0, x2:1 y2:0, stop:0 #272929, stop:1 #797687);
+}</string>
+              </property>
               <property name="text">
                <string>Exit</string>
               </property>
@@ -155,6 +189,17 @@
            <layout class="QGridLayout" name="gridLayout_3">
             <item row="5" column="1">
              <widget class="PushButtonHover" name="connectButton_2">
+              <property name="styleSheet">
+               <string notr="true">QPushButton { 
+font: 24pt;
+border: 2px solid #ffd700;
+border-radius: 12px;
+} 
+
+QPushButton:hover {
+background-color: qlineargradient( x1:0 y1:0, x2:1 y2:0, stop:0 #272929, stop:1 #797687);
+}</string>
+              </property>
               <property name="text">
                <string>Connect</string>
               </property>
@@ -162,6 +207,17 @@
             </item>
             <item row="5" column="2">
              <widget class="PushButtonHover" name="exitButton_2">
+              <property name="styleSheet">
+               <string notr="true">QPushButton { 
+font: 24pt;
+border: 2px solid #ffd700;
+border-radius: 12px;
+} 
+
+QPushButton:hover {
+background-color: qlineargradient( x1:0 y1:0, x2:1 y2:0, stop:0 #272929, stop:1 #797687);
+}</string>
+              </property>
               <property name="text">
                <string>Exit</string>
               </property>
@@ -170,12 +226,16 @@
             <item row="1" column="1" colspan="2">
              <widget class="QLineEdit" name="username_le">
               <property name="styleSheet">
-               <string notr="true">border: 2px solid #ffd700; border-radius: 10px;</string>
+               <string notr="true">border: 2px solid #ffd700; border-radius: 10px;
+color: #343635;</string>
               </property>
              </widget>
             </item>
             <item row="2" column="0">
              <widget class="QLabel" name="label">
+              <property name="styleSheet">
+               <string notr="true">background-color: none;</string>
+              </property>
               <property name="text">
                <string>Address:</string>
               </property>
@@ -186,6 +246,9 @@
             </item>
             <item row="1" column="0">
              <widget class="QLabel" name="label_7">
+              <property name="styleSheet">
+               <string notr="true">background-color: none;</string>
+              </property>
               <property name="text">
                <string>Username:</string>
               </property>
@@ -196,6 +259,17 @@
             </item>
             <item row="5" column="0">
              <widget class="PushButtonHover" name="backButton_2">
+              <property name="styleSheet">
+               <string notr="true">QPushButton { 
+font: 24pt;
+border: 2px solid #ffd700;
+border-radius: 12px;
+} 
+
+QPushButton:hover {
+background-color: qlineargradient( x1:0 y1:0, x2:1 y2:0, stop:0 #272929, stop:1 #797687);
+}</string>
+              </property>
               <property name="text">
                <string>Back</string>
               </property>
@@ -203,6 +277,9 @@
             </item>
             <item row="3" column="0">
              <widget class="QLabel" name="label_3">
+              <property name="styleSheet">
+               <string notr="true">background-color: none;</string>
+              </property>
               <property name="text">
                <string>Port:</string>
               </property>
@@ -230,14 +307,16 @@
             <item row="3" column="1" colspan="2">
              <widget class="QLineEdit" name="port_le">
               <property name="styleSheet">
-               <string notr="true">border: 2px solid #ffd700; border-radius: 10px;</string>
+               <string notr="true">border: 2px solid #ffd700; border-radius: 10px;
+color: #343635;</string>
               </property>
              </widget>
             </item>
             <item row="2" column="1" colspan="2">
              <widget class="QLineEdit" name="ip_address_le">
               <property name="styleSheet">
-               <string notr="true">border: 2px solid #ffd700; border-radius: 10px;</string>
+               <string notr="true">border: 2px solid #ffd700; border-radius: 10px;
+color: #343635;</string>
               </property>
              </widget>
             </item>
@@ -287,7 +366,8 @@
             <item row="3" column="1" colspan="2">
              <widget class="QLineEdit" name="ip_address_le_2">
               <property name="styleSheet">
-               <string notr="true">border: 2px solid #ffd700; border-radius: 10px;</string>
+               <string notr="true">border: 2px solid #ffd700; border-radius: 10px;
+color: #343635;</string>
               </property>
              </widget>
             </item>
@@ -316,6 +396,17 @@
             </item>
             <item row="7" column="0">
              <widget class="PushButtonHover" name="backButton_3">
+              <property name="styleSheet">
+               <string notr="true">QPushButton { 
+font: 24pt;
+border: 2px solid #ffd700;
+border-radius: 12px;
+} 
+
+QPushButton:hover {
+background-color: qlineargradient( x1:0 y1:0, x2:1 y2:0, stop:0 #272929, stop:1 #797687);
+}</string>
+              </property>
               <property name="text">
                <string>Back</string>
               </property>
@@ -324,12 +415,24 @@
             <item row="1" column="1" colspan="2">
              <widget class="QLineEdit" name="room_name_le">
               <property name="styleSheet">
-               <string notr="true">border: 2px solid #ffd700; border-radius: 10px;</string>
+               <string notr="true">border: 2px solid #ffd700; border-radius: 10px;
+color: #343635;</string>
               </property>
              </widget>
             </item>
             <item row="7" column="1">
              <widget class="PushButtonHover" name="startButton">
+              <property name="styleSheet">
+               <string notr="true">QPushButton { 
+font: 24pt;
+border: 2px solid #ffd700;
+border-radius: 12px;
+} 
+
+QPushButton:hover {
+background-color: qlineargradient( x1:0 y1:0, x2:1 y2:0, stop:0 #272929, stop:1 #797687);
+}</string>
+              </property>
               <property name="text">
                <string>Start</string>
               </property>
@@ -337,6 +440,17 @@
             </item>
             <item row="7" column="2">
              <widget class="PushButtonHover" name="exitButton_3">
+              <property name="styleSheet">
+               <string notr="true">QPushButton { 
+font: 24pt;
+border: 2px solid #ffd700;
+border-radius: 12px;
+} 
+
+QPushButton:hover {
+background-color: qlineargradient( x1:0 y1:0, x2:1 y2:0, stop:0 #272929, stop:1 #797687);
+}</string>
+              </property>
               <property name="text">
                <string>Exit</string>
               </property>
@@ -345,7 +459,8 @@
             <item row="2" column="1" colspan="2">
              <widget class="QLineEdit" name="host_username_le">
               <property name="styleSheet">
-               <string notr="true">border: 2px solid #ffd700; border-radius: 10px;</string>
+               <string notr="true">border: 2px solid #ffd700; border-radius: 10px;
+color: #343635;</string>
               </property>
              </widget>
             </item>
@@ -378,7 +493,8 @@
             <item row="4" column="1" colspan="2">
              <widget class="QLineEdit" name="server_port_le">
               <property name="styleSheet">
-               <string notr="true">border: 2px solid #ffd700; border-radius: 10px;</string>
+               <string notr="true">border: 2px solid #ffd700; border-radius: 10px;
+color: #343635;</string>
               </property>
              </widget>
             </item>
@@ -415,6 +531,9 @@
        <layout class="QGridLayout" name="gridLayout_12">
         <item row="0" column="0" colspan="3">
          <layout class="QGridLayout" name="gridLayout_7">
+          <property name="horizontalSpacing">
+           <number>0</number>
+          </property>
           <item row="0" column="1">
            <widget class="QLabel" name="roomname_label">
             <property name="sizePolicy">
@@ -430,7 +549,11 @@
              </size>
             </property>
             <property name="styleSheet">
-             <string notr="true">border: 2px solid #ffd700; border-radius: 10px;</string>
+             <string notr="true">border: 1px solid #ffd700;
+border-top-right-radius: 10px;
+border-bottom-right-radius: 10px;
+border-left: none;
+background-color: qlineargradient( x1:0 y1:0, x2:1 y2:0, stop:0 #4d504f, stop:1 #54525e);</string>
             </property>
             <property name="text">
              <string/>
@@ -452,7 +575,11 @@
              </size>
             </property>
             <property name="styleSheet">
-             <string notr="true">border: 2px solid #ffd700; border-radius: 10px;</string>
+             <string notr="true">border: 1px solid #ffd700; 
+border-top-left-radius: 10px;
+border-bottom-left-radius: 10px;
+border-right: none;
+background-color: #4d504f;</string>
             </property>
             <property name="text">
              <string>user list</string>
@@ -490,8 +617,9 @@
              </size>
             </property>
             <property name="styleSheet">
-             <string notr="true">border: 2px solid #ffd700; border-radius: 10px;
-</string>
+             <string notr="true">border: 1px solid #ffd700; border-radius: 10px;
+/*background-color: #4d504f;*/
+background-color: qlineargradient( x1:0 y1:0, x2:1 y2:0, stop:0 #4d504f, stop:1 #54525e);</string>
             </property>
             <property name="lineWidth">
              <number>1</number>
@@ -527,7 +655,8 @@
                </size>
               </property>
               <property name="styleSheet">
-               <string notr="true">border: 2px solid #ffd700; border-radius: 10px;</string>
+               <string notr="true">border: 1px solid #ffd700; border-radius: 10px;
+background-color: #54525e;</string>
               </property>
               <property name="text">
                <string/>
@@ -561,7 +690,8 @@
                </size>
               </property>
               <property name="styleSheet">
-               <string notr="true">border: 2px solid #ffd700; border-radius: 10px;</string>
+               <string notr="true">border: 1px solid #ffd700; border-radius: 10px;
+background-color: #54525e;</string>
               </property>
               <property name="text">
                <string/>
@@ -595,7 +725,9 @@
                </size>
               </property>
               <property name="styleSheet">
-               <string notr="true">border: 2px solid #ffd700; border-radius: 10px;</string>
+               <string notr="true">border: 1px solid #ffd700; border-radius: 10px;
+background-color: #54525e;
+</string>
               </property>
               <property name="text">
                <string/>
@@ -614,6 +746,15 @@
         </item>
         <item row="1" column="0" rowspan="2">
          <layout class="QGridLayout" name="gridLayout_8">
+          <property name="topMargin">
+           <number>0</number>
+          </property>
+          <property name="bottomMargin">
+           <number>0</number>
+          </property>
+          <property name="horizontalSpacing">
+           <number>6</number>
+          </property>
           <item row="1" column="0">
            <widget class="QLabel" name="username_label">
             <property name="sizePolicy">
@@ -627,6 +768,10 @@
               <width>0</width>
               <height>75</height>
              </size>
+            </property>
+            <property name="styleSheet">
+             <string notr="true">border: 1px solid #ffd700; border-radius: 10px;
+background-color: #4d504f;</string>
             </property>
             <property name="text">
              <string/>
@@ -651,8 +796,8 @@
              </size>
             </property>
             <property name="styleSheet">
-             <string notr="true">border: 2px solid #ffd700; border-radius: 10px; 
-</string>
+             <string notr="true">border: 1px solid #ffd700; border-radius: 10px;
+background-color: #4d504f;</string>
             </property>
             <property name="movement">
              <enum>QListView::Static</enum>
@@ -672,7 +817,8 @@
           <item row="0" column="0">
            <widget class="QPlainTextEdit" name="plainTextEdit">
             <property name="styleSheet">
-             <string notr="true">border: 2px solid #ffd700; border-radius: 10px;</string>
+             <string notr="true">border: 1px solid #ffd700; border-radius: 10px;
+background-color: qlineargradient( x1:0 y1:0, x2:1 y2:0, stop:0 #4d504f, stop:1 #54525e);</string>
             </property>
            </widget>
           </item>

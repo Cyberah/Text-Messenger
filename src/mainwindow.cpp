@@ -182,14 +182,15 @@ void MainWindow::onReceivedInfo(std::pair<std::string, std::vector<std::string>>
 }
 
 void MainWindow::setupAppearance() {
-    setStyleSheet("background-color: #021b33; color: white;");
-    Utility::setButtonAppearance(ui->connectButton);
-    Utility::setButtonAppearance(ui->hostButton);
-    Utility::setButtonAppearance(ui->exitButton);
-    Utility::setButtonAppearance(ui->backButton_2);
-    Utility::setButtonAppearance(ui->connectButton_2);
-    Utility::setButtonAppearance(ui->exitButton_2);
-    Utility::setButtonAppearance(ui->backButton_3);
-    Utility::setButtonAppearance(ui->startButton);
-    Utility::setButtonAppearance(ui->exitButton_3);
+    //setStyleSheet("background-color: #382d2e; color: white;");
+    setStyleSheet("color: #f0f0f0; background-color: qlineargradient( x1:0 y1:0, x2:1 y2:0, stop:0 #272929, stop:1 #797687);} ");
+//    Utility::setButtonAppearance(ui->connectButton);
+//    Utility::setButtonAppearance(ui->hostButton);
+//    Utility::setButtonAppearance(ui->exitButton);
+//    Utility::setButtonAppearance(ui->backButton_2);
+//    Utility::setButtonAppearance(ui->connectButton_2);
+//    Utility::setButtonAppearance(ui->exitButton_2);
+//    Utility::setButtonAppearance(ui->backButton_3);
+//    Utility::setButtonAppearance(ui->startButton);
+//    Utility::setButtonAppearance(ui->exitButton_3);
 }

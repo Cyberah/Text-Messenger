@@ -67,9 +67,9 @@ namespace Utility {
         return { username, usertype };
     }
 
-    inline void setButtonAppearance(QAbstractButton* button) {
+    /*inline void setButtonAppearance(QAbstractButton* button) {
         button->setStyleSheet("QPushButton { font: 24pt; border: 2px solid #ffd700; border-radius: 12px; } QPushButton:hover { background-color: #053563; }");
-    }
+    }*/
 }
 
 #endif // UTILITY_H
