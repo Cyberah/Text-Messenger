@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>1072</width>
-    <height>715</height>
+    <height>733</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -61,7 +61,7 @@
 background-color: none;</string>
           </property>
           <property name="currentIndex">
-           <number>2</number>
+           <number>0</number>
           </property>
           <widget class="QWidget" name="page_3">
            <layout class="QGridLayout" name="gridLayout_2">
@@ -529,7 +529,19 @@ color: #343635;</string>
       </widget>
       <widget class="QWidget" name="page_2">
        <layout class="QGridLayout" name="gridLayout_12">
-        <item row="0" column="0" colspan="3">
+        <item row="1" column="1" colspan="2">
+         <layout class="QGridLayout" name="gridLayout_9" rowstretch="0" columnstretch="0">
+          <item row="0" column="0">
+           <widget class="QPlainTextEdit" name="plainTextEdit">
+            <property name="styleSheet">
+             <string notr="true">border: 1px solid #ffd700; border-radius: 10px;
+background-color: qlineargradient( x1:0 y1:0, x2:1 y2:0, stop:0 #4d504f, stop:1 #54525e);</string>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </item>
+        <item row="0" column="1" colspan="2">
          <layout class="QGridLayout" name="gridLayout_7">
           <property name="horizontalSpacing">
            <number>0</number>
@@ -550,42 +562,11 @@ color: #343635;</string>
             </property>
             <property name="styleSheet">
              <string notr="true">border: 1px solid #ffd700;
-border-top-right-radius: 10px;
-border-bottom-right-radius: 10px;
-border-left: none;
+border-radius: 10px;
 background-color: qlineargradient( x1:0 y1:0, x2:1 y2:0, stop:0 #4d504f, stop:1 #54525e);</string>
             </property>
             <property name="text">
              <string/>
-            </property>
-           </widget>
-          </item>
-          <item row="0" column="0">
-           <widget class="QLabel" name="label_10">
-            <property name="sizePolicy">
-             <sizepolicy hsizetype="Maximum" vsizetype="Minimum">
-              <horstretch>0</horstretch>
-              <verstretch>0</verstretch>
-             </sizepolicy>
-            </property>
-            <property name="minimumSize">
-             <size>
-              <width>100</width>
-              <height>0</height>
-             </size>
-            </property>
-            <property name="styleSheet">
-             <string notr="true">border: 1px solid #ffd700; 
-border-top-left-radius: 10px;
-border-bottom-left-radius: 10px;
-border-right: none;
-background-color: #4d504f;</string>
-            </property>
-            <property name="text">
-             <string>user list</string>
-            </property>
-            <property name="alignment">
-             <set>Qt::AlignCenter</set>
             </property>
            </widget>
           </item>
@@ -744,7 +725,7 @@ background-color: #54525e;
           </item>
          </layout>
         </item>
-        <item row="1" column="0" rowspan="2">
+        <item row="0" column="0" rowspan="3">
          <layout class="QGridLayout" name="gridLayout_8">
           <property name="topMargin">
            <number>0</number>
@@ -755,33 +736,10 @@ background-color: #54525e;
           <property name="horizontalSpacing">
            <number>6</number>
           </property>
+          <property name="verticalSpacing">
+           <number>0</number>
+          </property>
           <item row="1" column="0">
-           <widget class="QLabel" name="username_label">
-            <property name="sizePolicy">
-             <sizepolicy hsizetype="Minimum" vsizetype="Minimum">
-              <horstretch>0</horstretch>
-              <verstretch>0</verstretch>
-             </sizepolicy>
-            </property>
-            <property name="minimumSize">
-             <size>
-              <width>0</width>
-              <height>75</height>
-             </size>
-            </property>
-            <property name="styleSheet">
-             <string notr="true">border: 1px solid #ffd700; border-radius: 10px;
-background-color: #4d504f;</string>
-            </property>
-            <property name="text">
-             <string/>
-            </property>
-            <property name="alignment">
-             <set>Qt::AlignCenter</set>
-            </property>
-           </widget>
-          </item>
-          <item row="0" column="0">
            <widget class="QListWidget" name="userlistWidget">
             <property name="sizePolicy">
              <sizepolicy hsizetype="Fixed" vsizetype="MinimumExpanding">
@@ -796,7 +754,9 @@ background-color: #4d504f;</string>
              </size>
             </property>
             <property name="styleSheet">
-             <string notr="true">border: 1px solid #ffd700; border-radius: 10px;
+             <string notr="true">border: 1px solid #ffd700; 
+border-top: none;
+border-bottom: none;
 background-color: #4d504f;</string>
             </property>
             <property name="movement">
@@ -810,15 +770,61 @@ background-color: #4d504f;</string>
             </property>
            </widget>
           </item>
-         </layout>
-        </item>
-        <item row="1" column="1" colspan="2">
-         <layout class="QGridLayout" name="gridLayout_9" rowstretch="0" columnstretch="0">
-          <item row="0" column="0">
-           <widget class="QPlainTextEdit" name="plainTextEdit">
+          <item row="2" column="0">
+           <widget class="QLabel" name="username_label">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Minimum" vsizetype="Minimum">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <property name="minimumSize">
+             <size>
+              <width>0</width>
+              <height>75</height>
+             </size>
+            </property>
             <property name="styleSheet">
-             <string notr="true">border: 1px solid #ffd700; border-radius: 10px;
-background-color: qlineargradient( x1:0 y1:0, x2:1 y2:0, stop:0 #4d504f, stop:1 #54525e);</string>
+             <string notr="true">border: 1px solid #ffd700; 
+
+border-bottom-left-radius: 10px;
+border-bottom-right-radius: 10px;
+background-color: #4d504f;
+</string>
+            </property>
+            <property name="text">
+             <string/>
+            </property>
+            <property name="alignment">
+             <set>Qt::AlignCenter</set>
+            </property>
+           </widget>
+          </item>
+          <item row="0" column="0">
+           <widget class="QLabel" name="label_10">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Minimum" vsizetype="Minimum">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <property name="minimumSize">
+             <size>
+              <width>100</width>
+              <height>40</height>
+             </size>
+            </property>
+            <property name="styleSheet">
+             <string notr="true">border: 1px solid #ffd700; 
+border-top-left-radius: 10px;
+border-top-right-radius: 10px;
+background-color: #4d504f;</string>
+            </property>
+            <property name="text">
+             <string>user list</string>
+            </property>
+            <property name="alignment">
+             <set>Qt::AlignCenter</set>
             </property>
            </widget>
           </item>

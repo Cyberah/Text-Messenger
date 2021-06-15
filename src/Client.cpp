@@ -83,8 +83,14 @@ void Client::read() {
     asio::async_read_until(m_session->sock, m_read_sbuf, '\n',
         [this](auto const& ec, auto const /*bytes_transferred*/) {
             if (!ec) {
-                auto const message = Utility::make_string(m_read_sbuf);
-                emit received(message);
+                auto const message_raw{ Utility::make_string(m_read_sbuf) };
+                auto const message{ message_raw.substr(1, message_raw.size() - 1) };
+
+                if (message_raw.front() == 'S')
+                    emit serverMessageReceived(message);
+
+                else if (message_raw.front() == 'M')
+                    emit messageReceived(message);
 
                 read();
             }

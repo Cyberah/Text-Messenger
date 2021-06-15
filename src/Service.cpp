@@ -40,8 +40,10 @@ void Service::write_info() {
 
      asio::async_write(m_session->sock, asio::buffer(&complete_info[0], complete_info.length()),
          [this, self](auto const& ec, auto const /*bytes_received*/) {
-             if (!ec)
-                 readData();
+             if (!ec) {
+                 sendToAll("S" + m_session->username + '\n');
+                 //readData();
+             }
      });
 }
 
@@ -58,7 +60,7 @@ void Service::onReadDone(const system::error_code &ec) {
     if (!ec) {
         message = Utility::make_string(m_read_sbuf);
 
-        auto const complete_message{make_message(message)};
+        auto const complete_message{'M' + make_message(message)};
 
         sendToAll(complete_message);
     }

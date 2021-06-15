@@ -34,14 +34,16 @@ private slots:
     void            on_exitButton_3_clicked();
     void            on_sendButton_clicked();
 
-    void            onReceived(std::string_view);
+    void            onMessageReceived(std::string_view msg);
     void            onErrorOccured(system::error_code const& ec);
 
     void            onEnterPressed();
     void            onConnected();
 
     void            onBadConnect(system::error_code const& ec);
-    void            onReceivedInfo(std::pair<std::string, std::vector<std::string>> info);
+    void            onReceivedInfo(std::pair<std::string, std::vector<std::string>> const& info);
+
+    void            onServerMessageReceived(std::string_view msg);
 
 private:
     void            sendMessage();

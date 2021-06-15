@@ -23,13 +23,14 @@ public:
     void                read();
 
 signals:
-    void                received(std::string_view msg);
+    void                messageReceived(std::string_view msg);
+    void                serverMessageReceived(std::string_view msg);
+
     void                errorOccured(system::error_code const& ec);
-
     void                badConnect(system::error_code const& ec);
-    void                connected();
 
-    void                received_info(std::pair<std::string, std::vector<std::string>> info);
+    void                connected();
+    void                received_info(std::pair<std::string, std::vector<std::string>> const& info);
 
 private:
     void                on_connected(system::error_code const& ec);

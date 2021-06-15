@@ -22,11 +22,12 @@ MainWindow::MainWindow(QWidget *parent)
     client = std::make_unique<Client>();
     server = std::make_unique<Server>();
 
-    connect(client.get(), &Client::received, this, &MainWindow::onReceived, Qt::BlockingQueuedConnection);
+    connect(client.get(), &Client::messageReceived, this, &MainWindow::onMessageReceived, Qt::BlockingQueuedConnection);
     connect(client.get(), &Client::errorOccured, this, &MainWindow::onErrorOccured, Qt::BlockingQueuedConnection);
     connect(client.get(), &Client::connected, this, &MainWindow::onConnected, Qt::BlockingQueuedConnection);
     connect(client.get(), &Client::badConnect, this, &MainWindow::onBadConnect, Qt::BlockingQueuedConnection);
     connect(client.get(), &Client::received_info, this, &MainWindow::onReceivedInfo, Qt::BlockingQueuedConnection);
+    connect(client.get(), &Client::serverMessageReceived, this, &MainWindow::onServerMessageReceived, Qt::BlockingQueuedConnection);
 
     connect(ui->inputTextEdit, &KeyboardResponsiveTextEdit::enterPressed, this, &MainWindow::onEnterPressed);
 }
@@ -116,7 +117,7 @@ void MainWindow::on_sendButton_clicked() {
     sendMessage();
 }
 
-void MainWindow::onReceived(std::string_view message) {
+void MainWindow::onMessageReceived(std::string_view message) {
     auto const[complete_message, user_list]{Utility::process_message(message)};
 
     updateUserlist(user_list);
@@ -154,7 +155,7 @@ void MainWindow::onConnected() {
     client->communicate();
 
     ui->username_label->setText(ui->username_le->text());
-    ui->plainTextEdit->setPlainText("Connected to the server");
+    //ui->plainTextEdit->setPlainText("Connected to the server");
 }
 
 void MainWindow::onBadConnect(system::error_code const& ec) {
@@ -174,7 +175,7 @@ void MainWindow::onBadConnect(system::error_code const& ec) {
     ui->connection_status_label->setText("Could not connect to the server: " + reason);
 }
 
-void MainWindow::onReceivedInfo(std::pair<std::string, std::vector<std::string>> info) {
+void MainWindow::onReceivedInfo(std::pair<std::string, std::vector<std::string>> const& info) {
     ui->roomname_label->setText(QString::fromStdString(info.first));
     updateUserlist(info.second);
 
@@ -182,15 +183,10 @@ void MainWindow::onReceivedInfo(std::pair<std::string, std::vector<std::string>>
 }
 
 void MainWindow::setupAppearance() {
-    //setStyleSheet("background-color: #382d2e; color: white;");
     setStyleSheet("color: #f0f0f0; background-color: qlineargradient( x1:0 y1:0, x2:1 y2:0, stop:0 #272929, stop:1 #797687);} ");
-//    Utility::setButtonAppearance(ui->connectButton);
-//    Utility::setButtonAppearance(ui->hostButton);
-//    Utility::setButtonAppearance(ui->exitButton);
-//    Utility::setButtonAppearance(ui->backButton_2);
-//    Utility::setButtonAppearance(ui->connectButton_2);
-//    Utility::setButtonAppearance(ui->exitButton_2);
-//    Utility::setButtonAppearance(ui->backButton_3);
-//    Utility::setButtonAppearance(ui->startButton);
-//    Utility::setButtonAppearance(ui->exitButton_3);
+}
+
+void MainWindow::onServerMessageReceived(std::string_view str) {
+    auto const username{QString::fromStdString(str.data())};
+    ui->plainTextEdit->appendPlainText(username + " has connected to the server!");
 }

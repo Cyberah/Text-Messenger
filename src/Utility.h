@@ -14,6 +14,16 @@ namespace Utility {
         USER
     };
 
+    struct info_pack {
+        explicit info_pack(std::string_view room_name, std::string_view connected_username, std::vector<std::string>& userlist)
+            : room_name{ room_name }
+            , connected_username { connected_username }
+            , userlist { userlist } {}
+        std::string_view room_name;
+        std::string_view connected_username;
+        std::vector<std::string> userlist;
+    };
+
     inline std::string make_string(boost::asio::streambuf& buf) {
         std::string temp;
         std::istream is{ &buf };
@@ -30,7 +40,7 @@ namespace Utility {
         button->setIconSize(button->rect().size() / factor);
     }
 
-    //process message: username|\\usertyope|\\message|\\userlist
+    //process message: username|\\usertype|\\message|\\userlist
     inline std::pair<std::string, std::vector<std::string>> process_message(std::string_view message) {
         std::vector<std::string> result;
         boost::split(result, message, boost::is_any_of("|\\"), boost::token_compress_on);
@@ -56,7 +66,7 @@ namespace Utility {
         return { room_name, user_list };
     }
 
-    //username|\\usertype;
+    //extract_user_info: username|\\usertype;
     inline std::pair<std::string, Usertype> extract_user_info(std::string_view content) {
         auto const pos{ content.find("|\\") };
 
@@ -66,10 +76,6 @@ namespace Utility {
         auto const usertype{ usertype_str == "ADMIN" ? Usertype::ADMIN : Usertype::USER };
         return { username, usertype };
     }
-
-    /*inline void setButtonAppearance(QAbstractButton* button) {
-        button->setStyleSheet("QPushButton { font: 24pt; border: 2px solid #ffd700; border-radius: 12px; } QPushButton:hover { background-color: #053563; }");
-    }*/
 }
 
 #endif // UTILITY_H
