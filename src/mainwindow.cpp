@@ -155,7 +155,6 @@ void MainWindow::onConnected() {
     client->communicate();
 
     ui->username_label->setText(ui->username_le->text());
-    //ui->plainTextEdit->setPlainText("Connected to the server");
 }
 
 void MainWindow::onBadConnect(system::error_code const& ec) {

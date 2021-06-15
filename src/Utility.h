@@ -14,16 +14,6 @@ namespace Utility {
         USER
     };
 
-    struct info_pack {
-        explicit info_pack(std::string_view room_name, std::string_view connected_username, std::vector<std::string>& userlist)
-            : room_name{ room_name }
-            , connected_username { connected_username }
-            , userlist { userlist } {}
-        std::string_view room_name;
-        std::string_view connected_username;
-        std::vector<std::string> userlist;
-    };
-
     inline std::string make_string(boost::asio::streambuf& buf) {
         std::string temp;
         std::istream is{ &buf };
