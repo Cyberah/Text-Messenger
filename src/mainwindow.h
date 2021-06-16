@@ -58,6 +58,7 @@ private:
 
     std::unique_ptr<Client> client;
     std::unique_ptr<Server> server;
-    bool hosted{false};
+    bool hosted{ false };
+    bool connected{ false };
 };
 #endif // MAINWINDOW_H

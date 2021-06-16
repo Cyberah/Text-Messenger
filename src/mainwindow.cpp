@@ -40,7 +40,9 @@ MainWindow::~MainWindow() {
     if (hosted)
         server->stop();
 
-    client->disconnect();
+    if (connected)
+        client->disconnect();
+
     delete ui;
 }
 
@@ -156,6 +158,7 @@ void MainWindow::updateUserlist(std::vector<std::string> const& user_list) {
 
 void MainWindow::onConnected() {
     client->setClientUsername(ui->username_le->text().toStdString());
+    connected = true;
     client->communicate();
 
     ui->username_label->setText(ui->username_le->text());
