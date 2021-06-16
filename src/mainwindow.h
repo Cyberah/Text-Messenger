@@ -5,6 +5,7 @@
 #include <QKeyEvent>
 #include "Server.h"
 #include "Client.h"
+#include "AnimatedLabel.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -50,8 +51,11 @@ private:
     void            badConnect(system::error_code const& ec);
     void            updateUserlist(std::vector<std::string> const& user_list);
     void            setupAppearance();
+
 private:
     Ui::MainWindow *ui;
+    AnimatedLabel* animatedLabelFactory;
+
     std::unique_ptr<Client> client;
     std::unique_ptr<Server> server;
     bool hosted{false};

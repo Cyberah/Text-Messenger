@@ -14,6 +14,7 @@ INCLUDEPATH += C:/boost_1_74_0/
 LIBS += "-LC:/boost_1_74_0/stage/lib/"
 
 SOURCES += \
+    AnimatedLabel.cpp \
     Client.cpp \
     KeyboardResponsiveTextEdit.cpp \
     PushButtonHover.cpp \
@@ -23,6 +24,7 @@ SOURCES += \
     mainwindow.cpp
 
 HEADERS += \
+    AnimatedLabel.h \
     Client.h \
     Client_Session.h \
     KeyboardResponsiveTextEdit.h \

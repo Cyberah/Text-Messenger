@@ -2,6 +2,7 @@
 #include "ui_mainwindow.h"
 #include "Utility.h"
 #include "KeyboardResponsiveTextEdit.h"
+
 #include <QString>
 #include <QMessageBox>
 #include <QLabel>
@@ -12,6 +13,9 @@ MainWindow::MainWindow(QWidget *parent)
     ui->setupUi(this);
     ui->inputTextEdit->setPlaceholderText("Type here");
     ui->plainTextEdit->setReadOnly(true);
+
+    animatedLabelFactory = new AnimatedLabel{this};
+    animatedLabelFactory->createAnimation(ui->animatedLabel);
 
     setupAppearance();
 
