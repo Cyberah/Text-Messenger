@@ -14,7 +14,7 @@ QPropertyAnimation *AnimatedLabel::createAnimation(QLabel *label) {
     label->setStyleSheet("background: none;");
 
     QPropertyAnimation *animation = new QPropertyAnimation(label, "geometry");
-    animation->setDuration(35000);
+    animation->setDuration(45000);
 
     animation->setStartValue(QRect((m_width + 2500), m_height, 100, 100));
     animation->setEndValue(QRect((m_width - m_width - 3000), m_height, 100, 100));
