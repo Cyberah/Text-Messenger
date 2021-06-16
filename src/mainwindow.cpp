@@ -40,9 +40,7 @@ MainWindow::~MainWindow() {
     if (hosted)
         server->stop();
 
-    if (connected)
-        client->disconnect();
-
+    client->disconnect();
     delete ui;
 }
 

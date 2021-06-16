@@ -20,19 +20,23 @@ void Client::connect(asio::ip::address const& ip_address, const unsigned short p
 }
 
 void Client::disconnect() {
-    m_session->sock.shutdown(asio::ip::tcp::socket::shutdown_both);
+    if (m_connected) {
+        m_session->sock.shutdown(asio::ip::tcp::socket::shutdown_both);
+
+        if (m_readThread->joinable())
+            m_readThread->join();
+    }
+
     m_ioc.stop();
-
-    if (m_readThread->joinable())
-        m_readThread->join();
-
     for (auto& th : m_thread_pool)
-        th->join();
+            th->join();
 }
 
 void Client::on_connected(system::error_code const& ec) {
-    if (!ec)
+    if (!ec) {
+        m_connected = true;
         emit connected();
+    }
     else
         emit badConnect(ec);
 }

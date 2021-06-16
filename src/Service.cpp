@@ -65,15 +65,13 @@ void Service::onReadDone(const system::error_code &ec) {
 }
 
 void Service::sendToAll(std::string_view message) {
-    auto self{ shared_from_this() };   
-
     for (auto const& s : m_active_sessions) {
         asio::async_write(s->sock, asio::buffer(&message[0], message.size()),
-            [this, self](auto const& ec, auto const /*bytes_sent*/) {
-                if (!ec)
-                    readData();
+            [](auto const/*& ec*/, auto const /*bytes_sent*/) {
+                //NO-OP
         });
     }
+    readData();
 }
 
 std::string Service::make_message(std::string_view message) {

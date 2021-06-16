@@ -8,7 +8,6 @@ using namespace boost;
 
 class Client final : public QObject {
     Q_OBJECT
-    //friend class ClientTest;
 
 public:
                         Client();
@@ -42,6 +41,7 @@ private:
     std::string         get_message();
 
 private:
+    bool m_connected{ false };
     asio::io_context m_ioc;
     std::unique_ptr<asio::io_context::work> m_work;
     std::string m_user_name;
