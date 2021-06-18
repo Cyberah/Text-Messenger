@@ -35,6 +35,9 @@ private slots:
     void            on_exitButton_3_clicked();
     void            on_sendButton_clicked();
 
+    void            on_exitLobbyButton_clicked();
+    void            on_leaveLobbyButton_clicked();
+
     void            onMessageReceived(std::string_view msg);
     void            onErrorOccured(system::error_code const& ec);
 
@@ -51,6 +54,7 @@ private:
     void            badConnect(system::error_code const& ec);
     void            updateUserlist(std::vector<std::string> const& user_list);
     void            setupAppearance();
+    void            clearAllInputs();
 
 private:
     Ui::MainWindow *ui;

@@ -4,13 +4,14 @@
 Server::Server() {}
 
 void Server::start(asio::ip::address const& ip_address, unsigned short const port) {
+    m_ioc.restart();
     m_port = port;
+
     m_work = std::make_unique<asio::io_context::work>(m_ioc);
     m_ep = std::make_unique<asio::ip::tcp::endpoint>(ip_address, port);
     m_acceptor = std::make_unique<asio::ip::tcp::acceptor>(m_ioc, *m_ep);
 
     m_acceptor->listen();
-
     start_accepting();
 
     for (auto _{ 0 }; _ < 4; ++_) {
@@ -46,8 +47,10 @@ void Server::stop() {
     m_acceptor->close();
     m_ioc.stop();
 
-    for (auto& th : m_thread_pool)
-        th->join();
+    for (auto& th : m_thread_pool) {
+        if (th->joinable())
+            th->join();
+    }
 }
 
 asio::ip::address Server::address() const noexcept {

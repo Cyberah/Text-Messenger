@@ -4,8 +4,9 @@
 Client::Client() {}
 
 void Client::connect(asio::ip::address const& ip_address, const unsigned short port, Utility::Usertype ut) {
-    m_work = std::make_unique<asio::io_context::work>(m_ioc);
-    m_session = std::make_shared<ClientSession>(m_ioc, ip_address, port);
+    m_ioc.restart();
+    m_work.reset(new asio::io_context::work{m_ioc});
+    m_session.reset(new ClientSession{m_ioc, ip_address, port});
     m_usertype = ut;
 
     m_session->sock.async_connect(m_session->ep,
@@ -21,15 +22,16 @@ void Client::connect(asio::ip::address const& ip_address, const unsigned short p
 
 void Client::disconnect() {
     if (m_connected) {
+        m_connected = false;
         m_session->sock.shutdown(asio::ip::tcp::socket::shutdown_both);
-
-        if (m_readThread->joinable())
-            m_readThread->join();
     }
 
     m_ioc.stop();
-    for (auto& th : m_thread_pool)
+    for (auto& th : m_thread_pool) {
+        if (th->joinable())
             th->join();
+    }
+
 }
 
 void Client::on_connected(system::error_code const& ec) {
@@ -66,7 +68,7 @@ void Client::read_info() {
                 auto const info{ Utility::process_server_info(info_raw) };
 
                 emit received_info(info);
-                handle_read();
+                read();
             }
     });
 }
@@ -77,10 +79,6 @@ void Client::write(std::string_view message) {
             if (ec)
                 emit errorOccured(ec);
     });
-}
-
-void Client::handle_read() {
-    m_readThread = std::make_unique<std::thread>(m_strand.wrap([this]() { read(); }));
 }
 
 void Client::read() {

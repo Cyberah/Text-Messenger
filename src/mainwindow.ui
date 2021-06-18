@@ -48,7 +48,7 @@
 background-color: none;</string>
           </property>
           <property name="currentIndex">
-           <number>0</number>
+           <number>2</number>
           </property>
           <widget class="QWidget" name="page_3">
            <layout class="QGridLayout" name="gridLayout_2">
@@ -559,6 +559,37 @@ background-color: qlineargradient( x1:0 y1:0, x2:1 y2:0, stop:0 #4d504f, stop:1 
           <property name="horizontalSpacing">
            <number>0</number>
           </property>
+          <item row="0" column="2">
+           <widget class="PushButtonHover" name="leaveLobbyButton">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Maximum" vsizetype="Fixed">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <property name="minimumSize">
+             <size>
+              <width>180</width>
+              <height>40</height>
+             </size>
+            </property>
+            <property name="styleSheet">
+             <string notr="true">QPushButton { 
+font: 24pt;
+border: 1px solid #ffd700;
+border-radius: 12px;
+background-color: #54525e;
+} 
+
+QPushButton:hover {
+background-color: qlineargradient( x1:0 y1:0, x2:1 y2:0, stop:0 #272929, stop:1 #797687);
+}</string>
+            </property>
+            <property name="text">
+             <string>Leave room</string>
+            </property>
+           </widget>
+          </item>
           <item row="0" column="1">
            <widget class="QLabel" name="roomname_label">
             <property name="sizePolicy">
@@ -580,6 +611,37 @@ background-color: qlineargradient( x1:0 y1:0, x2:1 y2:0, stop:0 #4d504f, stop:1 
             </property>
             <property name="text">
              <string/>
+            </property>
+           </widget>
+          </item>
+          <item row="0" column="3">
+           <widget class="PushButtonHover" name="exitLobbyButton">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Maximum" vsizetype="Fixed">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <property name="minimumSize">
+             <size>
+              <width>70</width>
+              <height>40</height>
+             </size>
+            </property>
+            <property name="styleSheet">
+             <string notr="true">QPushButton { 
+font: 24pt;
+border: 1px solid #ffd700;
+border-radius: 12px;
+background-color: #54525e;
+} 
+
+QPushButton:hover {
+background-color: qlineargradient( x1:0 y1:0, x2:1 y2:0, stop:0 #272929, stop:1 #797687);
+}</string>
+            </property>
+            <property name="text">
+             <string>Exit</string>
             </property>
            </widget>
           </item>
@@ -649,8 +711,14 @@ background-color: qlineargradient( x1:0 y1:0, x2:1 y2:0, stop:0 #4d504f, stop:1 
                </size>
               </property>
               <property name="styleSheet">
-               <string notr="true">border: 1px solid #ffd700; border-radius: 10px;
-background-color: #54525e;</string>
+               <string notr="true">QPushButton {
+border: 1px solid #ffd700; border-radius: 10px;
+background-color: #54525e;
+}
+
+QPushButton:hover {
+background-color: qlineargradient( x1:0 y1:0, x2:1 y2:0, stop:0 #272929, stop:1 #797687);
+}</string>
               </property>
               <property name="text">
                <string/>
@@ -684,8 +752,14 @@ background-color: #54525e;</string>
                </size>
               </property>
               <property name="styleSheet">
-               <string notr="true">border: 1px solid #ffd700; border-radius: 10px;
-background-color: #54525e;</string>
+               <string notr="true">QPushButton {
+border: 1px solid #ffd700; border-radius: 10px;
+background-color: #54525e;
+}
+
+QPushButton:hover {
+background-color: qlineargradient( x1:0 y1:0, x2:1 y2:0, stop:0 #272929, stop:1 #797687);
+}</string>
               </property>
               <property name="text">
                <string/>
@@ -719,9 +793,14 @@ background-color: #54525e;</string>
                </size>
               </property>
               <property name="styleSheet">
-               <string notr="true">border: 1px solid #ffd700; border-radius: 10px;
+               <string notr="true">QPushButton {
+border: 1px solid #ffd700; border-radius: 10px;
 background-color: #54525e;
-</string>
+}
+
+QPushButton:hover {
+background-color: qlineargradient( x1:0 y1:0, x2:1 y2:0, stop:0 #272929, stop:1 #797687);
+}</string>
               </property>
               <property name="text">
                <string/>

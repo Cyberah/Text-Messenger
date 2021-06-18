@@ -40,7 +40,9 @@ MainWindow::~MainWindow() {
     if (hosted)
         server->stop();
 
-    client->disconnect();
+    if (connected)
+        client->disconnect();
+
     delete ui;
 }
 
@@ -70,8 +72,9 @@ void MainWindow::on_connectButton_2_clicked() {
     system::error_code bad_address;
     auto const ip_address{ boost::asio::ip::address::from_string(ip_address_raw, bad_address) };
 
+    //client.reset(new Client);
     if (!bad_address)
-          client->connect(ip_address, port, Utility::Usertype::USER);
+        client->connect(ip_address, port, Utility::Usertype::USER);
 }
 
 void MainWindow::on_exitButton_2_clicked() {
@@ -92,14 +95,16 @@ void MainWindow::on_startButton_clicked() {
     system::error_code bad_address;
     auto const address{asio::ip::address::from_string(address_raw, bad_address)};
 
+    //server.reset(new Server);
+    //client.reset(new Client);
     if (!bad_address) {
         try {
             server->start(address, port);
             server->setRoomname(roomname);
 
             hosted = true;
-
             ui->username_le->setText(ui->host_username_le->text());
+
             client->connect(server->address(), port, Utility::Usertype::ADMIN);
         }
         catch(system::system_error const& error) {
@@ -156,9 +161,9 @@ void MainWindow::updateUserlist(std::vector<std::string> const& user_list) {
 
 void MainWindow::onConnected() {
     client->setClientUsername(ui->username_le->text().toStdString());
-    connected = true;
     client->communicate();
 
+    connected = true;
     ui->username_label->setText(ui->username_le->text());
 }
 
@@ -193,4 +198,38 @@ void MainWindow::setupAppearance() {
 void MainWindow::onServerMessageReceived(std::string_view str) {
     auto const username{QString::fromStdString(str.data())};
     ui->plainTextEdit->appendPlainText(username + " has connected to the server!");
+}
+
+void MainWindow::on_exitLobbyButton_clicked() {
+    QApplication::exit();
+}
+
+void MainWindow::on_leaveLobbyButton_clicked() {
+    if (hosted) {
+        server->stop();
+        hosted = false;
+    }
+
+    if (connected) {
+        client->disconnect();
+        connected = false;
+    }
+
+    clearAllInputs();
+
+    ui->stackedWidget->setCurrentIndex(0);
+    ui->stackedWidget_2->setCurrentIndex(0);
+}
+
+void MainWindow::clearAllInputs() {
+    ui->username_le->clear();
+    ui->ip_address_le->clear();
+    ui->port_le->clear();
+    ui->connection_status_label->clear();
+
+    ui->bad_ip_address_label->clear();
+    ui->room_name_le->clear();
+    ui->host_username_le->clear();
+    ui->ip_address_le_2->clear();
+    ui->server_port_le->clear();
 }
