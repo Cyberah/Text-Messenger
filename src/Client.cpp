@@ -4,7 +4,9 @@
 Client::Client() {}
 
 Client::~Client() {
-    disconnect();
+    if (m_connected)
+        disconnect();
+
     for (auto& th : m_thread_pool) {
         if (th->joinable())
             th->join();
