@@ -3,6 +3,14 @@
 
 Client::Client() {}
 
+Client::~Client() {
+    disconnect();
+    for (auto& th : m_thread_pool) {
+        if (th->joinable())
+            th->join();
+    }
+}
+
 void Client::connect(asio::ip::address const& ip_address, const unsigned short port, Utility::Usertype ut) {
     m_ioc.restart();
     m_work = std::make_unique<asio::io_context::work>(m_ioc);
@@ -28,10 +36,6 @@ void Client::disconnect() {
     }
 
     m_ioc.stop();
-    for (auto& th : m_thread_pool) {
-        if (th->joinable())
-            th->join();
-    }
 }
 
 void Client::on_connected(system::error_code const& ec) {

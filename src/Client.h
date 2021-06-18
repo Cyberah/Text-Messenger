@@ -11,6 +11,7 @@ class Client final : public QObject {
 
 public:
                         Client();
+                        ~Client();
 
     void                connect(asio::ip::address const& ip_address, unsigned short const port, Utility::Usertype ut);
     void                disconnect();
