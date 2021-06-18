@@ -37,7 +37,6 @@ private:
     void                write_info();
     void                read_info();
 
-//    void                handle_read();
     std::string         get_message();
 
 private:
@@ -49,8 +48,6 @@ private:
     asio::streambuf m_info_sbuf;
     Utility::Usertype m_usertype;
     std::shared_ptr<ClientSession> m_session;
-//    std::unique_ptr<std::thread> m_readThread;
-//   asio::io_context::strand m_strand{ *m_ioc };
     std::vector<std::unique_ptr<std::thread>> m_thread_pool;
 };
 #endif // CLIENT_H

@@ -5,8 +5,9 @@ Client::Client() {}
 
 void Client::connect(asio::ip::address const& ip_address, const unsigned short port, Utility::Usertype ut) {
     m_ioc.restart();
-    m_work.reset(new asio::io_context::work{m_ioc});
-    m_session.reset(new ClientSession{m_ioc, ip_address, port});
+    m_work = std::make_unique<asio::io_context::work>(m_ioc);
+
+    m_session = std::make_unique<ClientSession>(m_ioc, ip_address, port);
     m_usertype = ut;
 
     m_session->sock.async_connect(m_session->ep,
@@ -31,7 +32,6 @@ void Client::disconnect() {
         if (th->joinable())
             th->join();
     }
-
 }
 
 void Client::on_connected(system::error_code const& ec) {

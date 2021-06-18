@@ -72,7 +72,6 @@ void MainWindow::on_connectButton_2_clicked() {
     system::error_code bad_address;
     auto const ip_address{ boost::asio::ip::address::from_string(ip_address_raw, bad_address) };
 
-    //client.reset(new Client);
     if (!bad_address)
         client->connect(ip_address, port, Utility::Usertype::USER);
 }
@@ -95,8 +94,6 @@ void MainWindow::on_startButton_clicked() {
     system::error_code bad_address;
     auto const address{asio::ip::address::from_string(address_raw, bad_address)};
 
-    //server.reset(new Server);
-    //client.reset(new Client);
     if (!bad_address) {
         try {
             server->start(address, port);
