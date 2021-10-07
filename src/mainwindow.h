@@ -54,7 +54,8 @@ private:
     void            badConnect(system::error_code const& ec);
     void            updateUserlist(std::vector<std::string> const& user_list);
     void            setupAppearance();
-    void            clearAllInputs();
+    void            clearWidgets();
+    void            clearInputs();
 
 private:
     Ui::MainWindow *ui;

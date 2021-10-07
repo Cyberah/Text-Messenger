@@ -7,6 +7,7 @@ Client::~Client() {
     if (m_connected)
         disconnect();
 
+    m_ioc.stop();
     for (auto& th : m_thread_pool) {
         if (th->joinable())
             th->join();
@@ -34,10 +35,10 @@ void Client::connect(asio::ip::address const& ip_address, const unsigned short p
 void Client::disconnect() {
     if (m_connected) {
         m_connected = false;
+        //write disconnect -> server announces disconnect of *nickname*...
+
         m_session->sock.shutdown(asio::ip::tcp::socket::shutdown_both);
     }
-
-    m_ioc.stop();
 }
 
 void Client::on_connected(system::error_code const& ec) {

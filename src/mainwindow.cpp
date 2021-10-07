@@ -12,7 +12,7 @@ MainWindow::MainWindow(QWidget *parent)
     , ui(new Ui::MainWindow) {
     ui->setupUi(this);
     ui->inputTextEdit->setPlaceholderText("Type here");
-    ui->plainTextEdit->setReadOnly(true);
+    ui->chatTextWidget->setReadOnly(true);
 
     animatedLabelFactory = new AnimatedLabel{this};
     animatedLabelFactory->createAnimation(ui->animatedLabel);
@@ -127,7 +127,7 @@ void MainWindow::onMessageReceived(std::string_view message) {
     auto const[complete_message, user_list]{Utility::process_message(message)};
 
     updateUserlist(user_list);
-    ui->plainTextEdit->appendPlainText(QString::fromStdString(complete_message));
+    ui->chatTextWidget->appendPlainText(QString::fromStdString(complete_message));
 }
 
 void MainWindow::onErrorOccured(system::error_code const& ec) {
@@ -194,7 +194,7 @@ void MainWindow::setupAppearance() {
 
 void MainWindow::onServerMessageReceived(std::string_view str) {
     auto const username{QString::fromStdString(str.data())};
-    ui->plainTextEdit->appendPlainText(username + " has connected to the server!");
+    ui->chatTextWidget->appendPlainText(username + " has connected to the server!");
 }
 
 void MainWindow::on_exitLobbyButton_clicked() {
@@ -212,13 +212,20 @@ void MainWindow::on_leaveLobbyButton_clicked() {
         connected = false;
     }
 
-    clearAllInputs();
+    clearWidgets();
 
     ui->stackedWidget->setCurrentIndex(0);
     ui->stackedWidget_2->setCurrentIndex(0);
 }
 
-void MainWindow::clearAllInputs() {
+void MainWindow::clearWidgets() {
+    clearInputs();
+
+    ui->userlistWidget->clear();
+    ui->chatTextWidget->clear();
+}
+
+void MainWindow::clearInputs() {
     ui->username_le->clear();
     ui->ip_address_le->clear();
     ui->port_le->clear();
