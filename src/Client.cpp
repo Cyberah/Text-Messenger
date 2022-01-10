@@ -1,5 +1,32 @@
+/*
+ * MIT License
+ *
+ * Copyright (c) 2022 Szymon Milewski
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in all
+ * copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+ * SOFTWARE.
+ */
+
 #include "Client.h"
 #include "Client_Session.h"
+#include "Message.h"
+#include <boost/algorithm/string/split.hpp>
+#include <boost/algorithm/string/classification.hpp>
 
 Client::Client() {}
 
@@ -23,7 +50,7 @@ void Client::connect(asio::ip::address const& ip_address, const unsigned short p
 
     m_session->sock.async_connect(m_session->ep,
         [this](auto const& ec) {
-            on_connected(ec);
+            onConnected(ec);
     });
 
     for (auto i{ 0 }; i < 4; ++i) {
@@ -34,50 +61,35 @@ void Client::connect(asio::ip::address const& ip_address, const unsigned short p
 
 void Client::disconnect() {
     if (m_connected) {
-        m_connected = false;
-        //write disconnect -> server announces disconnect of *nickname*...
+        ClientMessage const user_left{ ClientProperties{ MessageType::USER_LEFT, m_user_name, m_usertype }, "" };
+        write(user_left());
 
+        m_connected = false;
         m_session->sock.shutdown(asio::ip::tcp::socket::shutdown_both);
     }
 }
 
-void Client::on_connected(system::error_code const& ec) {
+void Client::onConnected(system::error_code const& ec) {
     if (!ec) {
         m_connected = true;
         emit connected();
     }
+
     else
         emit badConnect(ec);
 }
 
 void Client::communicate() {
-    write_info();
+    ClientMessage const user_connected{ ClientProperties{ MessageType::USER_CONNECTED, m_user_name, m_usertype }, "blank" };
+
+    write(user_connected());
+    read();
+
 }
 
-void Client::write_info() {
-    auto const ut{ m_usertype == Utility::Usertype::ADMIN ? "ADMIN" : "USER" };
-    auto const complete_info{ m_user_name + "|\\" + ut + '\n' };
-
-    asio::async_write(m_session->sock, asio::buffer(&complete_info[0], complete_info.length()),
-        [this](auto const& ec, auto const /*bytes_transferred*/) {
-            if (!ec)
-                read_info();
-            else
-                emit errorOccured(ec);
-    });
-}
-
-void Client::read_info() {
-    asio::async_read_until(m_session->sock, m_info_sbuf, '\n',
-        [this](auto const& ec, auto const /*bytes_transferred*/) {
-            if (!ec) {
-                auto const info_raw = Utility::make_string(m_info_sbuf);
-                auto const info{ Utility::process_server_info(info_raw) };
-
-                emit received_info(info);
-                read();
-            }
-    });
+void Client::sendMessage(std::string_view message) {
+    ClientMessage const complete_message{ ClientProperties{ MessageType::NORMAL, m_user_name, m_usertype }, message };
+    write(complete_message());
 }
 
 void Client::write(std::string_view message) {
@@ -92,18 +104,28 @@ void Client::read() {
     asio::async_read_until(m_session->sock, m_read_sbuf, '\n',
         [this](auto const& ec, auto const /*bytes_transferred*/) {
             if (!ec) {
-                auto const message_raw{ Utility::make_string(m_read_sbuf) };
-                auto const message{ message_raw.substr(1, message_raw.size() - 1) };
-
-                if (message_raw.front() == 'S')
-                    emit serverMessageReceived(message);
-
-                else if (message_raw.front() == 'M')
-                    emit messageReceived(message);
-
+                onReadDone();
                 read();
             }
     });
+}
+
+void Client::onReadDone() {
+    auto const message_raw{ Utility::makeString(m_read_sbuf) };
+    std::vector<std::string> result{ processMessage(message_raw) };
+
+    if (MessageTypeConvertions::strToMessageType(result[0]) == MessageType::NORMAL)
+        emit messageReceived(result);
+
+    else
+        emit serverMessageReceived(result);
+
+}
+
+std::vector<std::string> Client::processMessage(std::string_view message) {
+    std::vector<std::string> result;
+    boost::split(result, message, boost::is_any_of("|\\"), boost::token_compress_on);
+    return result;
 }
 
 void Client::setClientUsername(std::string_view username) {

@@ -17,6 +17,7 @@ SOURCES += \
     AnimatedLabel.cpp \
     Client.cpp \
     KeyboardResponsiveTextEdit.cpp \
+    Message.cpp \
     PushButtonHover.cpp \
     Server.cpp \
     Service.cpp \
@@ -28,6 +29,7 @@ HEADERS += \
     Client.h \
     Client_Session.h \
     KeyboardResponsiveTextEdit.h \
+    Message.h \
     PushButtonHover.h \
     Server.h \
     Server_Session.h \

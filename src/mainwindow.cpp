@@ -1,3 +1,27 @@
+/*
+ * MIT License
+ *
+ * Copyright (c) 2022 Szymon Milewski
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in all
+ * copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+ * SOFTWARE.
+ */
+
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 #include "Utility.h"
@@ -6,6 +30,8 @@
 #include <QString>
 #include <QMessageBox>
 #include <QLabel>
+#include <boost/algorithm/string/split.hpp>
+#include <boost/algorithm/string/classification.hpp>
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -19,9 +45,9 @@ MainWindow::MainWindow(QWidget *parent)
 
     setupAppearance();
 
-    Utility::set_button_icon(ui->emojiButton, ":/img/img/emoji.png", 1.5);
-    Utility::set_button_icon(ui->attachmentsButton, ":/img/img/clip.png", 1.5);
-    Utility::set_button_icon(ui->sendButton, ":/img/img/arrow.png", 1.1);
+    Utility::setButtonIcon(ui->emojiButton, ":/img/img/emoji.png", 1.5);
+    Utility::setButtonIcon(ui->attachmentsButton, ":/img/img/clip.png", 1.5);
+    Utility::setButtonIcon(ui->sendButton, ":/img/img/arrow.png", 1.1);
 
     client = std::make_unique<Client>();
     server = std::make_unique<Server>();
@@ -30,7 +56,6 @@ MainWindow::MainWindow(QWidget *parent)
     connect(client.get(), &Client::errorOccured, this, &MainWindow::onErrorOccured, Qt::BlockingQueuedConnection);
     connect(client.get(), &Client::connected, this, &MainWindow::onConnected, Qt::BlockingQueuedConnection);
     connect(client.get(), &Client::badConnect, this, &MainWindow::onBadConnect, Qt::BlockingQueuedConnection);
-    connect(client.get(), &Client::received_info, this, &MainWindow::onReceivedInfo, Qt::BlockingQueuedConnection);
     connect(client.get(), &Client::serverMessageReceived, this, &MainWindow::onServerMessageReceived, Qt::BlockingQueuedConnection);
 
     connect(ui->inputTextEdit, &KeyboardResponsiveTextEdit::enterPressed, this, &MainWindow::onEnterPressed);
@@ -65,9 +90,7 @@ void MainWindow::on_backButton_2_clicked() {
 void MainWindow::on_connectButton_2_clicked() {
     ui->connection_status_label->setText("Connecting to " + ui->ip_address_le->text() + "...");
     auto const ip_address_raw{ui->ip_address_le->text().toStdString()};
-
     auto const port{ui->port_le->text().toShort()};
-    auto const username{ui->username_le->text().toStdString()};
 
     system::error_code bad_address;
     auto const ip_address{ boost::asio::ip::address::from_string(ip_address_raw, bad_address) };
@@ -87,9 +110,7 @@ void MainWindow::on_backButton_3_clicked() {
 void MainWindow::on_startButton_clicked() {
     auto const port{ui->server_port_le->text().toShort()};
     auto const address_raw{ui->ip_address_le_2->text().toStdString()};
-
-    auto const username{ui->host_username_le->text().toStdString()};
-    auto const roomname{ui->room_name_le->text().toStdString()};
+    auto const room_name{ui->room_name_le->text().toStdString()};
 
     system::error_code bad_address;
     auto const address{asio::ip::address::from_string(address_raw, bad_address)};
@@ -97,7 +118,7 @@ void MainWindow::on_startButton_clicked() {
     if (!bad_address) {
         try {
             server->start(address, port);
-            server->setRoomname(roomname);
+            server->setRoomName(room_name);
 
             hosted = true;
             ui->username_le->setText(ui->host_username_le->text());
@@ -123,11 +144,17 @@ void MainWindow::on_sendButton_clicked() {
     sendMessage();
 }
 
-void MainWindow::onMessageReceived(std::string_view message) {
-    auto const[complete_message, user_list]{Utility::process_message(message)};
+void MainWindow::onMessageReceived(std::vector<std::string>& message_set) {
+    auto const room_name{ message_set[1] };
+    auto const user_list{ message_set[2] };
+    auto const user_name{ message_set[3] };
+    auto const user_type{ message_set[4] };
+    auto const message{ message_set[5] };
 
-    updateUserlist(user_list);
-    ui->chatTextWidget->appendPlainText(QString::fromStdString(complete_message));
+    updateRoomName(room_name);
+    updateUserlist(strToVectorUserlist(user_list));
+
+    ui->chatTextWidget->appendPlainText(QString::fromStdString(user_name + "(" + user_type + "): " + message));
 }
 
 void MainWindow::onErrorOccured(system::error_code const& ec) {
@@ -143,9 +170,9 @@ void MainWindow::onEnterPressed() {
 
 void MainWindow::sendMessage() {
     if (!ui->inputTextEdit->toPlainText().isEmpty()) {
-        auto const message{ui->inputTextEdit->toPlainText().toStdString() + '\n'};
+        auto const message{ui->inputTextEdit->toPlainText().toStdString()};
 
-        client->write(message);
+        client->sendMessage(message);
         ui->inputTextEdit->clear();
     }
 }
@@ -162,6 +189,7 @@ void MainWindow::onConnected() {
 
     connected = true;
     ui->username_label->setText(ui->username_le->text());
+    ui->stackedWidget->setCurrentIndex(1);
 }
 
 void MainWindow::onBadConnect(system::error_code const& ec) {
@@ -181,20 +209,23 @@ void MainWindow::onBadConnect(system::error_code const& ec) {
     ui->connection_status_label->setText("Could not connect to the server: " + reason);
 }
 
-void MainWindow::onReceivedInfo(std::pair<std::string, std::vector<std::string>> const& info) {
-    ui->roomname_label->setText(QString::fromStdString(info.first));
-    updateUserlist(info.second);
-
-    ui->stackedWidget->setCurrentIndex(1);
-}
-
 void MainWindow::setupAppearance() {
     setStyleSheet("color: #f0f0f0; background-color: qlineargradient( x1:0 y1:0, x2:1 y2:0, stop:0 #272929, stop:1 #797687);} ");
 }
 
-void MainWindow::onServerMessageReceived(std::string_view str) {
-    auto const username{QString::fromStdString(str.data())};
-    ui->chatTextWidget->appendPlainText(username + " has connected to the server!");
+void MainWindow::onServerMessageReceived(std::vector<std::string>& message_set) {
+    auto const room_name{message_set[1]};
+    auto const userlist{message_set[2]};
+    auto const username{QString::fromStdString(message_set[3])};
+
+    updateRoomName(room_name);
+    updateUserlist(strToVectorUserlist(userlist));
+
+    if (MessageTypeConvertions::strToMessageType(message_set[0]) == MessageType::USER_CONNECTED)
+        ui->chatTextWidget->appendPlainText(username + " has connected to the server!");
+
+    else
+        ui->chatTextWidget->appendPlainText(username + " has left the server. ");
 }
 
 void MainWindow::on_exitLobbyButton_clicked() {
@@ -236,4 +267,14 @@ void MainWindow::clearInputs() {
     ui->host_username_le->clear();
     ui->ip_address_le_2->clear();
     ui->server_port_le->clear();
+}
+
+std::vector<std::string> MainWindow::strToVectorUserlist(std::string_view user_list_str) {
+    std::vector<std::string> user_list;
+    boost::split(user_list, user_list_str, boost::is_any_of(","));
+    return user_list;
+}
+
+void MainWindow::updateRoomName(std::string_view room_name) {
+    ui->roomname_label->setText(QString::fromStdString(room_name.data()));
 }

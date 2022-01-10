@@ -1,8 +1,3 @@
-#ifndef KEYBOARDRESPONSIVETEXTEDIT_H
-#define KEYBOARDRESPONSIVETEXTEDIT_H
-#include <QPlainTextEdit>
-#include <QKeyEvent>
-
 /*
  * MIT License
  *
@@ -27,14 +22,36 @@
  * SOFTWARE.
  */
 
-class KeyboardResponsiveTextEdit final : public QPlainTextEdit {
-    Q_OBJECT
-public:
-                    KeyboardResponsiveTextEdit(QWidget* parent = nullptr);
-    void            keyPressEvent(QKeyEvent* event) override;
+#include "Message.h"
 
-signals:
-    void            enterPressed();
-};
+ClientMessage::ClientMessage(ClientProperties const& properties, std::string_view message)
+    : m_properties{ properties }
+    , m_message{ message } {}
 
-#endif // KEYBOARDRESPONSIVETEXTEDIT_H
+std::string ClientMessage::operator()() const {
+    auto const mt{ MessageTypeConvertions::messageTypeToString(m_properties.message_type) };
+    std::string const ut{ m_properties.user_type == Utility::Usertype::ADMIN ? "ADMIN" : "USER" };
+
+    return mt
+        + "|\\" + m_properties.user_name
+        + "|\\" + ut
+        + "|\\" + m_message
+        + '\n';
+}
+
+ServerMessage::ServerMessage(ServerProperties const& properties, std::string_view message)
+    : m_properties{ properties }
+    , m_message{ message } {}
+
+std::string ServerMessage::operator()() const {
+    auto const mt{ MessageTypeConvertions::messageTypeToString(m_properties.message_type) };
+    std::string const ut{ m_properties.user_type == Utility::Usertype::ADMIN ? "ADMIN" : "USER" };
+
+    return mt
+        + "|\\" + m_properties.room_name
+        + "|\\" + m_properties.user_list
+        + "|\\" + m_properties.user_name
+        + "|\\" + ut
+        + "|\\" + m_message
+        + '\n';
+}
