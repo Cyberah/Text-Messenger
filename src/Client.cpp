@@ -88,7 +88,7 @@ void Client::communicate() {
 }
 
 void Client::sendMessage(std::string_view message) {
-    ClientMessage const complete_message{ ClientProperties{ MessageType::NORMAL, m_user_name, m_usertype }, message };
+    ClientMessage const complete_message{ ClientProperties{ MessageType::NORMAL, m_user_name, m_usertype }, MessageFilter::filterBackSlashes(message) };
     write(complete_message());
 }
 
