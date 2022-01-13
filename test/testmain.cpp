@@ -1,4 +1,4 @@
-#include "tst_client.h"
+#include "message_test.h"
 
 #include <gtest/gtest.h>
 

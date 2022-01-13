@@ -8,17 +8,12 @@ CONFIG += qt
 LIBS += "-LC:/boost_1_74_0/stage/lib/"
 
 HEADERS += \
-        ../src/Client.h \
-        ../src/Server.h \
-        ../src/Service.h \
         ../src/Utility.h \
-        ../src/Server_Session.h \
-        tst_client.h
+        ../src/Message.h \
+        message_test.h
 
 SOURCES += \
-        ../src/Client.cpp \
-        ../src/Server.cpp \
-        ../src/Service.cpp \
+        ../src/Message.cpp \
         testmain.cpp
 
 INCLUDEPATH += \

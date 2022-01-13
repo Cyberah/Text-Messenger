@@ -51,7 +51,7 @@ void Service::onReadDone(system::error_code const& ec) {
         auto const message_raw{ Utility::makeString(m_read_sbuf) };
         processMessage(message_raw);
 
-        ServerMessage const complete_message{ ServerProperties{ m_message_type, m_room_name, userListToString(), m_session->username/*m_user_name*/, m_usertype }, m_message };
+        ServerMessage const complete_message{ ServerProperties{ m_message_type, m_room_name, userListToString(), m_session->username, m_usertype }, m_message };
         sendToAll(complete_message());
     }
 }
