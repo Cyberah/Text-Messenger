@@ -121,4 +121,13 @@ namespace MessageTypeConvertions {
         return type;
     }
 }
+
+namespace MessageFilter {
+    inline std::string filterBackSlashes(std::string_view content) {
+        std::string temp{ content };
+        temp.erase(std::remove(temp.begin(), temp.end(), '\\'), temp.end());
+        temp.shrink_to_fit();
+        return temp;
+    }
+}
 #endif // MESSAGE_H

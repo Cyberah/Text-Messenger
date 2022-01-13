@@ -60,6 +60,13 @@ TEST(MessageTest, NoRoomnameAndUsernameInServerMessage) {
     EXPECT_EQ(server_message_test(), server_message_str_pattern);
 }
 
+TEST(MessageTest, FilterRemovesBackSlashes) {
+    auto const filtered{ MessageFilter::filterBackSlashes("Some\\ generic \\message") };
+    auto const expected{"Some generic message"};
+
+    EXPECT_EQ(filtered, expected);
+}
+
 //no further tests are needed since this unit has very limited use case.
 
 #endif // MESSAGE_TEST_H
