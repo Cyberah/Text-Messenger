@@ -20,8 +20,7 @@
  * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
- */
-
+*/
 #include "Client.h"
 #include "Client_Session.h"
 #include "Message.h"
@@ -32,16 +31,19 @@ Client::Client() {}
 
 Client::~Client() {
     if (m_connected)
-        disconnect();
+        stop();
+}
 
+void Client::stop() {
     m_ioc.stop();
     for (auto& th : m_thread_pool) {
-        if (th->joinable())
+        if (th->joinable()) {
             th->join();
+        }
     }
 }
 
-void Client::connect(asio::ip::address const& ip_address, const unsigned short port, Utility::Usertype ut) {
+void Client::connect(asio::ip::address const& ip_address, unsigned short const port, Utility::Usertype ut) {
     m_ioc.restart();
     m_work = std::make_unique<asio::io_context::work>(m_ioc);
 
@@ -53,7 +55,7 @@ void Client::connect(asio::ip::address const& ip_address, const unsigned short p
             onConnected(ec);
     });
 
-    for (auto i{ 0 }; i < 4; ++i) {
+    for (auto i{ 0 }; i < 2; ++i) {
         auto th{ std::make_unique<std::thread>([this]() { m_ioc.run(); }) };
         m_thread_pool.push_back(std::move(th));
     }
@@ -64,9 +66,14 @@ void Client::disconnect() {
         ClientMessage const user_left{ ClientProperties{ MessageType::USER_LEFT, m_user_name, m_usertype }, "" };
         write(user_left());
 
-        m_connected = false;
-        m_session->sock.shutdown(asio::ip::tcp::socket::shutdown_both);
+        shutdownConnection();
+        stop();
     }
+}
+
+void Client::shutdownConnection() {
+    m_connected = false;
+    m_session->sock.shutdown(asio::ip::tcp::socket::shutdown_both);
 }
 
 void Client::onConnected(system::error_code const& ec) {

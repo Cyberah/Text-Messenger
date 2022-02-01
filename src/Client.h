@@ -46,11 +46,6 @@ public:
 
     void        sendMessage(std::string_view message);
 
-    void        write(std::string_view message);
-    void        read();
-
-    void        onReadDone();
-
 signals:
     void                messageReceived(std::vector<std::string>& message_set);
     void                serverMessageReceived(std::vector<std::string>& message_set);
@@ -63,6 +58,14 @@ signals:
 private:
     void                        onConnected(system::error_code const& ec);
     std::vector<std::string>    processMessage(std::string_view message);
+
+    void                        shutdownConnection();
+    void                        stop();
+
+    void                        write(std::string_view message);
+    void                        read();
+
+    void                        onReadDone();
 
 private:
     bool                                        m_connected{ false };

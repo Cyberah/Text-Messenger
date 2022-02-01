@@ -79,6 +79,7 @@ private:
     void                        clearWidgets();
     void                        clearInputs();
     void                        updateRoomName(std::string_view room_name);
+    void                        onAdminLeave();
     std::vector<std::string>    strToVectorUserlist(std::string_view user_list_str);
 
 private:
@@ -90,5 +91,6 @@ private:
 
     bool                        hosted{ false };
     bool                        connected{ false };
+    bool                        owned{ false };
 };
 #endif // MAINWINDOW_H

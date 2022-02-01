@@ -21,7 +21,6 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-
 #include "Server.h"
 #include "Service.h"
 
@@ -38,7 +37,7 @@ void Server::start(asio::ip::address const& ip_address, unsigned short const por
     m_acceptor->listen();
     startAccepting();
 
-    for (auto _{ 0 }; _ < 4; ++_) {
+    for (auto _{ 0 }; _ < 2; ++_) {
         auto th{ std::make_unique<std::thread>([this]() { m_ioc.run(); }) };
         m_thread_pool.push_back(std::move(th));
     }
