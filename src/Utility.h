@@ -52,6 +52,10 @@ namespace Utility {
         button->setIcon(ButtonIcon);
         button->setIconSize(button->rect().size() / factor);
     }
+
+    inline Utility::Usertype strToUsertype(std::string_view user_type) {
+        return user_type == "ADMIN" ? Utility::Usertype::ADMIN : Utility::Usertype::USER;
+    }
 }
 
 #endif // UTILITY_H

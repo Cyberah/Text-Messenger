@@ -83,11 +83,7 @@ void Service::processMessage(std::string_view message) {
 
     m_message_type = MessageTypeConvertions::strToMessageType(result[0]);
     m_session->username = result[1];
-    m_usertype = strToUsertype(result[2]);
+    m_usertype = Utility::strToUsertype(result[2]);
     m_message = result[3];
 
-}
-
-Utility::Usertype Service::strToUsertype(std::string_view user_type) {
-    return user_type == "ADMIN" ? Utility::Usertype::ADMIN : Utility::Usertype::USER;
 }

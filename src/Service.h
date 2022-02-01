@@ -41,7 +41,6 @@ private:
     void                        processMessage(std::string_view message);
 
     std::string                 userListToString();
-    Utility::Usertype           strToUsertype(std::string_view user_type);
 
 private:
     asio::streambuf                                 m_read_sbuf;

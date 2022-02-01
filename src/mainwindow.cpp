@@ -62,11 +62,11 @@ MainWindow::MainWindow(QWidget *parent)
 }
 
 MainWindow::~MainWindow() {
-    if (hosted)
-        server->stop();
-
     if (connected)
         client->disconnect();
+
+    if (hosted)
+        server->stop();
 
     delete ui;
 }
@@ -80,7 +80,7 @@ void MainWindow::on_hostButton_clicked() {
 }
 
 void MainWindow::on_exitButton_clicked() {
-    QApplication::exit();
+    QApplication::quit();
 }
 
 void MainWindow::on_backButton_2_clicked() {
@@ -100,7 +100,7 @@ void MainWindow::on_connectButton_2_clicked() {
 }
 
 void MainWindow::on_exitButton_2_clicked() {
-    QApplication::exit();
+    QApplication::quit();
 }
 
 void MainWindow::on_backButton_3_clicked() {
@@ -121,6 +121,7 @@ void MainWindow::on_startButton_clicked() {
             server->setRoomName(room_name);
 
             hosted = true;
+            owned = true;
             ui->username_le->setText(ui->host_username_le->text());
 
             client->connect(server->address(), port, Utility::Usertype::ADMIN);
@@ -137,7 +138,7 @@ void MainWindow::on_startButton_clicked() {
 }
 
 void MainWindow::on_exitButton_3_clicked() {
-    QApplication::exit();
+    QApplication::quit();
 }
 
 void MainWindow::on_sendButton_clicked() {
@@ -224,23 +225,43 @@ void MainWindow::onServerMessageReceived(std::vector<std::string>& message_set) 
     if (MessageTypeConvertions::strToMessageType(message_set[0]) == MessageType::USER_CONNECTED)
         ui->chatTextWidget->appendPlainText(username + " has connected to the server!");
 
+    else if (MessageTypeConvertions::strToMessageType(message_set[0]) == MessageType::USER_LEFT
+             && Utility::strToUsertype(message_set[4]) == Utility::Usertype::ADMIN) {
+        onAdminLeave();
+    }
+
     else
         ui->chatTextWidget->appendPlainText(username + " has left the server. ");
 }
 
+void MainWindow::onAdminLeave() {
+    if (!owned) {
+        auto message_box{new QMessageBox{this}};
+        message_box->setText("Owner has left the server, the room got closed.");
+
+        message_box->exec();
+
+        connected = false;
+        on_leaveLobbyButton_clicked();
+    }
+
+    else
+        on_leaveLobbyButton_clicked();
+}
+
 void MainWindow::on_exitLobbyButton_clicked() {
-    QApplication::exit();
+    QApplication::quit();
 }
 
 void MainWindow::on_leaveLobbyButton_clicked() {
-    if (hosted) {
-        server->stop();
-        hosted = false;
-    }
-
     if (connected) {
         client->disconnect();
         connected = false;
+    }
+
+    if (hosted) {
+        server->stop();
+        hosted = false;
     }
 
     clearWidgets();
