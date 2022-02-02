@@ -74,6 +74,9 @@ void Server::stop() {
         if (th->joinable())
             th->join();
     }
+
+    m_active_sessions.clear();
+    m_thread_pool.clear();
 }
 
 asio::ip::address Server::address() const noexcept {
