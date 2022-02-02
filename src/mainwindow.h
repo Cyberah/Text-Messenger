@@ -74,13 +74,18 @@ private slots:
 private:
     void                        sendMessage();
     void                        badConnect(system::error_code const& ec);
+
     void                        updateUserlist(std::vector<std::string> const& user_list);
     void                        setupAppearance();
+
     void                        clearWidgets();
     void                        clearInputs();
+
     void                        updateRoomName(std::string_view room_name);
     void                        onAdminLeave();
+
     std::vector<std::string>    strToVectorUserlist(std::string_view user_list_str);
+    void                        connectClient(std::unique_ptr<Client>&& client);
 
 private:
     Ui::MainWindow*             ui;
@@ -91,6 +96,5 @@ private:
 
     bool                        hosted{ false };
     bool                        connected{ false };
-    bool                        owned{ false };
 };
 #endif // MAINWINDOW_H

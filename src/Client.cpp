@@ -41,6 +41,7 @@ void Client::stop() {
             th->join();
         }
     }
+    m_thread_pool.clear();
 }
 
 void Client::connect(asio::ip::address const& ip_address, unsigned short const port, Utility::Usertype ut) {

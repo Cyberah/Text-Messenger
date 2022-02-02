@@ -49,15 +49,6 @@ MainWindow::MainWindow(QWidget *parent)
     Utility::setButtonIcon(ui->attachmentsButton, ":/img/img/clip.png", 1.5);
     Utility::setButtonIcon(ui->sendButton, ":/img/img/arrow.png", 1.1);
 
-    client = std::make_unique<Client>();
-    server = std::make_unique<Server>();
-
-    connect(client.get(), &Client::messageReceived, this, &MainWindow::onMessageReceived, Qt::BlockingQueuedConnection);
-    connect(client.get(), &Client::errorOccured, this, &MainWindow::onErrorOccured, Qt::BlockingQueuedConnection);
-    connect(client.get(), &Client::connected, this, &MainWindow::onConnected, Qt::BlockingQueuedConnection);
-    connect(client.get(), &Client::badConnect, this, &MainWindow::onBadConnect, Qt::BlockingQueuedConnection);
-    connect(client.get(), &Client::serverMessageReceived, this, &MainWindow::onServerMessageReceived, Qt::BlockingQueuedConnection);
-
     connect(ui->inputTextEdit, &KeyboardResponsiveTextEdit::enterPressed, this, &MainWindow::onEnterPressed);
 }
 
@@ -69,6 +60,14 @@ MainWindow::~MainWindow() {
         server->stop();
 
     delete ui;
+}
+
+void MainWindow::connectClient(std::unique_ptr<Client>&& client) {
+    connect(client.get(), &Client::messageReceived, this, &MainWindow::onMessageReceived, Qt::BlockingQueuedConnection);
+    connect(client.get(), &Client::errorOccured, this, &MainWindow::onErrorOccured, Qt::BlockingQueuedConnection);
+    connect(client.get(), &Client::connected, this, &MainWindow::onConnected, Qt::BlockingQueuedConnection);
+    connect(client.get(), &Client::badConnect, this, &MainWindow::onBadConnect, Qt::BlockingQueuedConnection);
+    connect(client.get(), &Client::serverMessageReceived, this, &MainWindow::onServerMessageReceived, Qt::BlockingQueuedConnection);
 }
 
 void MainWindow::on_connectButton_clicked() {
@@ -92,6 +91,9 @@ void MainWindow::on_connectButton_2_clicked() {
     auto const ip_address_raw{ui->ip_address_le->text().toStdString()};
     auto const port{ui->port_le->text().toShort()};
 
+    client = std::make_unique<Client>();
+    connectClient(std::move(client));
+
     system::error_code bad_address;
     auto const ip_address{ boost::asio::ip::address::from_string(ip_address_raw, bad_address) };
 
@@ -112,6 +114,11 @@ void MainWindow::on_startButton_clicked() {
     auto const address_raw{ui->ip_address_le_2->text().toStdString()};
     auto const room_name{ui->room_name_le->text().toStdString()};
 
+    client = std::make_unique<Client>();
+    connectClient(std::move(client));
+
+    server = std::make_unique<Server>();
+
     system::error_code bad_address;
     auto const address{asio::ip::address::from_string(address_raw, bad_address)};
 
@@ -121,7 +128,6 @@ void MainWindow::on_startButton_clicked() {
             server->setRoomName(room_name);
 
             hosted = true;
-            owned = true;
             ui->username_le->setText(ui->host_username_le->text());
 
             client->connect(server->address(), port, Utility::Usertype::ADMIN);
@@ -235,8 +241,8 @@ void MainWindow::onServerMessageReceived(std::vector<std::string>& message_set) 
 }
 
 void MainWindow::onAdminLeave() {
-    if (!owned) {
-        auto message_box{new QMessageBox{this}};
+    if (!hosted) {
+        auto message_box{ new QMessageBox{ this } };
         message_box->setText("Owner has left the server, the room got closed.");
 
         message_box->exec();
@@ -245,8 +251,9 @@ void MainWindow::onAdminLeave() {
         on_leaveLobbyButton_clicked();
     }
 
-    else
+    else {
         on_leaveLobbyButton_clicked();
+    }
 }
 
 void MainWindow::on_exitLobbyButton_clicked() {
