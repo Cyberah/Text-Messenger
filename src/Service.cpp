@@ -82,8 +82,18 @@ void Service::processMessage(std::string_view message) {
     boost::split(result, message, boost::is_any_of("|\\"), boost::token_compress_on);
 
     m_message_type = MessageTypeConvertions::strToMessageType(result[0]);
-    m_session->username = result[1];
+    auto const username{ result[1] };
+
+    m_session->username = username;
     m_usertype = Utility::strToUsertype(result[2]);
     m_message = result[3];
 
+    if (m_message_type == MessageType::USER_LEFT) {
+        m_active_sessions.erase(
+            std::remove_if(m_active_sessions.begin(), m_active_sessions.end(),
+                           [&username = std::as_const(username)](auto const &session) {
+                               return session->username == username;
+                           }),
+            m_active_sessions.end());
+    }
 }
