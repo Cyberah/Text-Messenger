@@ -41,6 +41,7 @@ private:
     void                        processMessage(std::string_view message);
 
     std::string                 userListToString();
+    void                        removeSession(std::string_view username);
 
 private:
     asio::streambuf                                 m_read_sbuf;

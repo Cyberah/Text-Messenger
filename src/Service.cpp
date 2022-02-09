@@ -69,13 +69,14 @@ void Service::sendToAll(std::string_view message) {
 std::string Service::userListToString() {
     if (!m_active_sessions.empty()) {
         auto users_str{ std::accumulate(m_active_sessions.cbegin(), m_active_sessions.cend(), std::string{},
-        [](auto const& str, auto const& session) {
-            return str + session->username + ',';
-        }) };
+            [](auto const& str, auto const& session) {
+                return str + session->username + ',';
+            }) };
 
         users_str.pop_back();
         return users_str;
     }
+
     else
         return std::string{};
 }
@@ -91,12 +92,15 @@ void Service::processMessage(std::string_view message) {
     m_usertype = Utility::strToUsertype(result[2]);
     m_message = result[3];
 
-    if (m_message_type == MessageType::USER_LEFT) {
-        m_active_sessions.erase(
-            std::remove_if(m_active_sessions.begin(), m_active_sessions.end(),
-                           [&username = std::as_const(username)](auto const &session) {
-                               return session->username == username;
-                           }),
-            m_active_sessions.end());
-    }
+    if (m_message_type == MessageType::USER_LEFT)
+        removeSession(username);
+}
+
+void Service::removeSession(std::string_view username) {
+    m_active_sessions.erase(
+        std::remove_if(m_active_sessions.begin(), m_active_sessions.end(),
+                       [&username = std::as_const(username)](auto const &session) {
+                           return session->username == username;
+                       }),
+        m_active_sessions.end());
 }
