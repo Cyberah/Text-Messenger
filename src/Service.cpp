@@ -67,14 +67,17 @@ void Service::sendToAll(std::string_view message) {
 }
 
 std::string Service::userListToString() {
-    auto users_str{ std::accumulate(m_active_sessions.cbegin(), m_active_sessions.cend(), std::string{},
+    if (!m_active_sessions.empty()) {
+        auto users_str{ std::accumulate(m_active_sessions.cbegin(), m_active_sessions.cend(), std::string{},
         [](auto const& str, auto const& session) {
             return str + session->username + ',';
         }) };
 
-    users_str.pop_back();
-
-    return users_str;
+        users_str.pop_back();
+        return users_str;
+    }
+    else
+        return std::string{};
 }
 
 void Service::processMessage(std::string_view message) {
