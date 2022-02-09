@@ -12,7 +12,7 @@ You can make lobby as admin and own it or simply connect to existing one as gues
 git clone https://github.com/Cyberah/Text-Messenger.git
 mkdir build
 cd build
-qmake ../Text-Messenger/Text-Messenger.pro
+qmake ../Text-Messenger/TextMessenger.pro
 make
 ```
 ### License
