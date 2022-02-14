@@ -24,7 +24,7 @@
        </sizepolicy>
       </property>
       <property name="currentIndex">
-       <number>0</number>
+       <number>1</number>
       </property>
       <widget class="QWidget" name="page">
        <layout class="QGridLayout" name="gridLayout_5">
@@ -692,6 +692,9 @@ background-color: qlineargradient( x1:0 y1:0, x2:1 y2:0, stop:0 #4d504f, stop:1 
             </property>
             <item row="1" column="0">
              <widget class="PushButtonHover" name="attachmentsButton">
+              <property name="enabled">
+               <bool>false</bool>
+              </property>
               <property name="sizePolicy">
                <sizepolicy hsizetype="Minimum" vsizetype="Minimum">
                 <horstretch>0</horstretch>
@@ -710,6 +713,15 @@ background-color: qlineargradient( x1:0 y1:0, x2:1 y2:0, stop:0 #4d504f, stop:1 
                 <height>37</height>
                </size>
               </property>
+              <property name="toolTip">
+               <string>work in progress</string>
+              </property>
+              <property name="toolTipDuration">
+               <number>-1</number>
+              </property>
+              <property name="autoFillBackground">
+               <bool>false</bool>
+              </property>
               <property name="styleSheet">
                <string notr="true">QPushButton {
 border: 1px solid #ffd700; border-radius: 10px;
@@ -718,6 +730,10 @@ background-color: #54525e;
 
 QPushButton:hover {
 background-color: qlineargradient( x1:0 y1:0, x2:1 y2:0, stop:0 #272929, stop:1 #797687);
+}
+
+QToolTip {
+color: black;
 }</string>
               </property>
               <property name="text">
@@ -774,6 +790,9 @@ background-color: qlineargradient( x1:0 y1:0, x2:1 y2:0, stop:0 #272929, stop:1 
             </item>
             <item row="0" column="0">
              <widget class="PushButtonHover" name="emojiButton">
+              <property name="enabled">
+               <bool>false</bool>
+              </property>
               <property name="sizePolicy">
                <sizepolicy hsizetype="Minimum" vsizetype="Minimum">
                 <horstretch>0</horstretch>
@@ -792,6 +811,12 @@ background-color: qlineargradient( x1:0 y1:0, x2:1 y2:0, stop:0 #272929, stop:1 
                 <height>37</height>
                </size>
               </property>
+              <property name="toolTip">
+               <string>work in progress</string>
+              </property>
+              <property name="toolTipDuration">
+               <number>-1</number>
+              </property>
               <property name="styleSheet">
                <string notr="true">QPushButton {
 border: 1px solid #ffd700; border-radius: 10px;
@@ -800,6 +825,10 @@ background-color: #54525e;
 
 QPushButton:hover {
 background-color: qlineargradient( x1:0 y1:0, x2:1 y2:0, stop:0 #272929, stop:1 #797687);
+}
+
+QToolTip {
+color: black;
 }</string>
               </property>
               <property name="text">
