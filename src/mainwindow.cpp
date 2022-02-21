@@ -26,6 +26,7 @@
 #include "ui_mainwindow.h"
 #include "Utility.h"
 #include "KeyboardResponsiveTextEdit.h"
+#include "InputValidator.h"
 
 #include <QString>
 #include <QMessageBox>
@@ -87,18 +88,46 @@ void MainWindow::on_backButton_2_clicked() {
 }
 
 void MainWindow::on_connectButton_2_clicked() {
-    ui->connection_status_label->setText("Connecting to " + ui->ip_address_le->text() + "...");
-    auto const ip_address_raw{ui->ip_address_le->text().toStdString()};
-    auto const port{ui->port_le->text().toShort()};
+    ui->client_potential_errors_label->clear();
+    ui->client_error_reason_label->clear();
 
-    client = std::make_unique<Client>();
-    connectClient(std::move(client));
+    if (!validateInputs()) {
+        ui->potential_errors_label->setText("Connecting to " + ui->ip_address_le->text() + "...");
 
-    system::error_code bad_address;
-    auto const ip_address{ boost::asio::ip::address::from_string(ip_address_raw, bad_address) };
+        auto const ip_address_raw{ui->ip_address_le->text().toStdString()};
+        auto const port{ui->port_le->text().toShort()};
 
-    if (!bad_address)
-        client->connect(ip_address, port, Utility::Usertype::USER);
+        client = std::make_unique<Client>();
+        connectClient(std::move(client));
+
+        system::error_code bad_address;
+        auto const ip_address{ boost::asio::ip::address::from_string(ip_address_raw, bad_address) };
+
+        if (!bad_address)
+            client->connect(ip_address, port, Utility::Usertype::USER);
+    }
+    else
+        ui->client_potential_errors_label->setText("When starting errors occured:");
+}
+
+bool MainWindow::validateInputs() {
+    bool failure{ false };
+    if (InputValidator::validateInput(ui->username_le->text())) {
+        ui->client_error_reason_label->setText("- Invalid username");
+        failure = true;
+    }
+
+    if(InputValidator::validateInput(ui->ip_address_le->text())) {
+        ui->client_error_reason_label->setText(ui->client_error_reason_label->text() + "\n- Invalid address");
+        failure = true;
+    }
+
+    if (InputValidator::validatePort(ui->port_le->text())) {
+        ui->client_error_reason_label->setText(ui->client_error_reason_label->text() + "\n- Invalid port");
+        failure = true;
+    }
+
+    return failure;
 }
 
 void MainWindow::on_exitButton_2_clicked() {
@@ -110,7 +139,9 @@ void MainWindow::on_backButton_3_clicked() {
 }
 
 void MainWindow::on_startButton_clicked() {
-    auto const port{ui->server_port_le->text().toShort()};
+    ui->error_reason_label->clear();
+
+    auto const port{ui->server_port_le->text().toInt()};
     auto const address_raw{ui->ip_address_le_2->text().toStdString()};
     auto const room_name{ui->room_name_le->text().toStdString()};
 
@@ -122,7 +153,9 @@ void MainWindow::on_startButton_clicked() {
     system::error_code bad_address;
     auto const address{asio::ip::address::from_string(address_raw, bad_address)};
 
-    if (!bad_address) {
+
+
+    if (!validateInputs(bad_address)) {
         try {
             server->start(address, port);
             server->setRoomName(room_name);
@@ -140,7 +173,32 @@ void MainWindow::on_startButton_clicked() {
         }
     }
     else
-        ui->bad_ip_address_label->setText("Bad ip address!");
+        ui->potential_errors_label->setText("When starting errors occured:");
+}
+
+bool MainWindow::validateInputs(system::error_code const& bad_address) {
+    bool failure = false;
+    if (InputValidator::validateInput(ui->room_name_le->text())) {
+        ui->error_reason_label->setText("- Invalid roomname");
+        failure = true;
+    }
+
+    if (InputValidator::validateInput(ui->host_username_le->text())) {
+        ui->error_reason_label->setText(ui->error_reason_label->text() + "\n- Invalid username");
+        failure = true;
+    }
+
+    if (InputValidator::validatePort(ui->server_port_le->text())) {
+        ui->error_reason_label->setText(ui->error_reason_label->text() + "\n- Invalid port");
+        failure = true;
+    }
+
+    if (bad_address) {
+        ui->error_reason_label->setText(ui->error_reason_label->text() + "\n- Invalid address");
+        failure = true;
+    }
+
+    return failure;
 }
 
 void MainWindow::on_exitButton_3_clicked() {
@@ -213,7 +271,7 @@ void MainWindow::onBadConnect(system::error_code const& ec) {
         default:
             reason = QString::fromStdString(ec.message()) + "\nError code: " + QString::number(ec.value()); break;
     }
-    ui->connection_status_label->setText("Could not connect to the server: " + reason);
+    ui->client_error_reason_label->setText("\n Could not connect to the server: " + reason);
 }
 
 void MainWindow::setupAppearance() {
@@ -288,9 +346,10 @@ void MainWindow::clearInputs() {
     ui->username_le->clear();
     ui->ip_address_le->clear();
     ui->port_le->clear();
-    ui->connection_status_label->clear();
+    ui->client_error_reason_label->clear();
+    ui->client_potential_errors_label->clear();
 
-    ui->bad_ip_address_label->clear();
+    ui->potential_errors_label->clear();
     ui->room_name_le->clear();
     ui->host_username_le->clear();
     ui->ip_address_le_2->clear();

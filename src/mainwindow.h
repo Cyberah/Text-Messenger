@@ -87,6 +87,9 @@ private:
     std::vector<std::string>    strToVectorUserlist(std::string_view user_list_str);
     void                        connectClient(std::unique_ptr<Client>&& client);
 
+    bool                        validateInputs(system::error_code const& bad_address);
+    bool                        validateInputs();
+
 private:
     Ui::MainWindow*             ui;
     AnimatedLabel*              animatedLabelFactory;

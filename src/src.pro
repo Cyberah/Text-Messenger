@@ -28,6 +28,7 @@ HEADERS += \
     AnimatedLabel.h \
     Client.h \
     Client_Session.h \
+    InputValidator.h \
     KeyboardResponsiveTextEdit.h \
     Message.h \
     PushButtonHover.h \
