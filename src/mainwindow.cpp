@@ -92,7 +92,7 @@ void MainWindow::on_connectButton_2_clicked() {
     ui->client_error_reason_label->clear();
 
     if (!validateInputs()) {
-        ui->potential_errors_label->setText("Connecting to " + ui->ip_address_le->text() + "...");
+        ui->client_potential_errors_label->setText("Connecting to " + ui->ip_address_le->text() + "...");
 
         auto const ip_address_raw{ui->ip_address_le->text().toStdString()};
         auto const port{ui->port_le->text().toShort()};
@@ -103,11 +103,25 @@ void MainWindow::on_connectButton_2_clicked() {
         system::error_code bad_address;
         auto const ip_address{ boost::asio::ip::address::from_string(ip_address_raw, bad_address) };
 
-        if (!bad_address)
-            client->connect(ip_address, port, Utility::Usertype::USER);
+        if (!bad_address) {
+            ui->connectButton_2->setDisabled(true);
+            ui->connectButton_2->setDown(true);
+            try {
+                client->connect(ip_address, port, Utility::Usertype::USER);
+            }
+            catch(system::system_error const& error) {
+                auto errorMsgBox{new QMessageBox{this}};
+                errorMsgBox->setText("Couldn't join the server: " + QString::fromStdString(error.what()));
+
+                errorMsgBox->exec();
+            }
+        }
+        else
+            ui->client_error_reason_label->setText("- Invalid address");
+
     }
     else
-        ui->client_potential_errors_label->setText("When starting errors occured:");
+        ui->client_potential_errors_label->setText("When connecting errors occured:");
 }
 
 bool MainWindow::validateInputs() {
@@ -152,8 +166,6 @@ void MainWindow::on_startButton_clicked() {
 
     system::error_code bad_address;
     auto const address{asio::ip::address::from_string(address_raw, bad_address)};
-
-
 
     if (!validateInputs(bad_address)) {
         try {
@@ -249,6 +261,8 @@ void MainWindow::updateUserlist(std::vector<std::string> const& user_list) {
 }
 
 void MainWindow::onConnected() {
+    ui->connectButton_2->setDisabled(false);
+    ui->connectButton_2->setDown(false);
     client->setClientUsername(ui->username_le->text().toStdString());
     client->communicate();
 
@@ -258,6 +272,9 @@ void MainWindow::onConnected() {
 }
 
 void MainWindow::onBadConnect(system::error_code const& ec) {
+    ui->connectButton_2->setDisabled(false);
+    ui->connectButton_2->setDown(false);
+
     QString reason;
     switch(ec.value()) {
         case 10049:
@@ -330,7 +347,6 @@ void MainWindow::on_leaveLobbyButton_clicked() {
     }
 
     clearWidgets();
-
     ui->stackedWidget->setCurrentIndex(0);
     ui->stackedWidget_2->setCurrentIndex(0);
 }

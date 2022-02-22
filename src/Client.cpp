@@ -30,8 +30,7 @@
 Client::Client() {}
 
 Client::~Client() {
-    if (m_connected)
-        stop();
+    stop();
 }
 
 void Client::stop() {
