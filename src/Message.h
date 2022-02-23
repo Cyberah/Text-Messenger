@@ -62,6 +62,7 @@ struct ServerProperties final {
 class IMessage {
 public:
     virtual std::string operator()() const = 0;
+    virtual ~IMessage() {};
 };
 
 class ClientMessage final : public IMessage {
